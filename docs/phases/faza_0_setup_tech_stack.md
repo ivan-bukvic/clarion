@@ -158,21 +158,21 @@ Definiše kako AI generiše kod za ovaj projekat. Mora biti postavljeno pre prvo
 
 | #   | Zadatak                                                                                        | Status |
 | --- | ---------------------------------------------------------------------------------------------- | ------ |
-| 1   | GitHub repozitorijum kreiran (private)                                                         | [ ]    |
-| 2   | Next.js projekat inicijalizovan (TypeScript, Tailwind, App Router)                             | [ ]    |
-| 3   | Folder struktura postavljena                                                                   | [ ]    |
-| 4   | ESLint i Prettier konfigurisani                                                                | [ ]    |
-| 5   | `.gitignore` postavljen                                                                        | [ ]    |
+| 1   | GitHub repozitorijum kreiran (private)                                                         | [x]    |
+| 2   | Next.js projekat inicijalizovan (TypeScript, Tailwind, App Router)                             | [x]    |
+| 3   | Folder struktura postavljena                                                                   | [x]    |
+| 4   | ESLint i Prettier konfigurisani                                                                | [x]    |
+| 5   | `.gitignore` postavljen                                                                        | [x]    |
 | 6   | Supabase projekat kreiran, `pgvector` extension omogućen                                       | [ ]    |
-| 7   | Supabase Auth konfigurisan, jedan korisnik seedovan                                            | [ ]    |
-| 8   | Supabase Storage bucket kreiran (nije javno čitljiv)                                           | [ ]    |
-| 9   | Supabase MCP spojen u Cursor                                                                   | [ ]    |
-| 10  | LLM provajder odabran (Claude ili OpenAI), API ključ pohranjen                                 | [ ]    |
-| 11  | Embedding model odabran, dimenzija zapisana                                                    | [ ]    |
+| 7   | Supabase Auth konfigurisan, jedan korisnik seedovan                                            | [x]    |
+| 8   | Supabase Storage bucket kreiran (nije javno čitljiv)                                           | [x]    |
+| 9   | Supabase MCP spojen u Cursor                                                                   | [x]    |
+| 10  | LLM provajder odabran (Claude ili OpenAI), API ključ pohranjen                                 | [x]    |
+| 11  | Embedding model odabran, dimenzija zapisana                                                    | [x]    |
 | 12  | `pdf-parse`, `mammoth`, `docx` instalirani i testirani                                         | [ ]    |
-| 13  | `.cursorrules` fajl kreiran                                                                    | [ ]    |
-| 14  | Shared Foundations moduli (`lib/supabase`, `lib/llm`, `lib/documents`, `lib/auth`) postavljeni | [ ]    |
-| 15  | `.env.local` kreiran sa potrebnim varijablama                                                  | [ ]    |
+| 13  | `.cursorrules` fajl kreiran                                                                    | [x]    |
+| 14  | Shared Foundations moduli (`lib/supabase`, `lib/llm`, `lib/documents`, `lib/auth`) postavljeni | [x]    |
+| 15  | `.env.local` kreiran sa potrebnim varijablama                                                  | [x]    |
 | 16  | (Kasnije) Vercel deployment konfigurisan                                                       | [ ]    |
 | 17  | (Kasnije) Basic-auth konfigurisan                                                              | [ ]    |
 
