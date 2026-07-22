@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clarion
 
-## Getting Started
+Portfolio/demo project — AI document chat with source citations, and AI-driven document comparison with a generated Word report. Not a product for real users; see `docs/PROJECT_MEMORY.md`.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Next.js 16 (App Router, TypeScript, Tailwind, shadcn/ui) · Supabase (Postgres + pgvector + Auth + Storage) · Anthropic Claude API (generation) · Voyage AI (embeddings, `voyage-3-lite`) · `pdf-parse` / `mammoth` (parsing) · `docx` (report generation)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. `npm install`
+2. Copy `.env.local.example` to `.env.local` and fill in:
+   - Supabase project URL + anon key + service role key (create a project at supabase.com, enable the `pgvector` extension)
+   - `ANTHROPIC_API_KEY` (console.anthropic.com)
+   - `VOYAGE_API_KEY` (dash.voyageai.com)
+3. `npm run dev` — app runs at `localhost:3000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture
 
-## Learn More
+One Next.js app serves frontend, API routes, and RAG orchestration — no separate backend service. Full rationale in `docs/PROJECT_MEMORY.md` (Architecture Lock section) and `docs/BACKEND_MASTER.md` §1-2.
 
-To learn more about Next.js, take a look at the following resources:
+## Project docs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All product/architecture/security specs live in `docs/`. Start with `docs/MASTER_PROMPT.md`, then `docs/PROJECT_MEMORY.md` for locked decisions. Phase-by-phase build plan: `docs/EXECUTION_PHASES.md` and `docs/phases/faza_0_*.md` through `faza_7_*.md`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Status
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Faza 0 (setup) in progress — see `docs/phases/faza_0_setup_tech_stack.md` checklist for exact state.
