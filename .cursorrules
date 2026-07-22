@@ -22,6 +22,9 @@ Portfolio/demo project. Pre bilo kakvog predloga arhitekture koja izgleda kao "p
 ## Naming
 - `snake_case` u bazi i u API payload-ima (`document_id`, `comparison_id`, `cited_chunk_ids`, `source_a_ref`). Nikad `camelCase` za ova polja — vidi PROJECT_MEMORY.md.
 
+## Jezik UI-ja
+- Sav user-facing tekst (UI, error poruke, DOCX izveštaj sadržaj) je na engleskom — vidi PROJECT_MEMORY.md, Lock — Jezik aplikacije. Kod/komentari mogu ostati na srpskom.
+
 ## Error handling
 - Svaka async operacija (parsing, embedding, LLM poziv, DOCX generisanje, upload) mora imati try/catch.
 - Error kodovi po BACKEND_MASTER.md §9: PARSE_FAILED, EMBEDDING_FAILED, NO_CHUNKS_RETRIEVED, COMPARISON_GENERATION_FAILED, DOCX_GENERATION_FAILED, UPLOAD_FAILED.
