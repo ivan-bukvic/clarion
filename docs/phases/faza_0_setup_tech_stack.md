@@ -163,7 +163,7 @@ Definiše kako AI generiše kod za ovaj projekat. Mora biti postavljeno pre prvo
 | 3   | Folder struktura postavljena                                                                   | [x]    |
 | 4   | ESLint i Prettier konfigurisani                                                                | [x]    |
 | 5   | `.gitignore` postavljen                                                                        | [x]    |
-| 6   | Supabase projekat kreiran, `pgvector` extension omogućen                                       | [ ]    |
+| 6   | Supabase projekat kreiran, `pgvector` extension omogućen                                       | [x]    |
 | 7   | Supabase Auth konfigurisan, jedan korisnik seedovan                                            | [x]    |
 | 8   | Supabase Storage bucket kreiran (nije javno čitljiv)                                           | [x]    |
 | 9   | Supabase MCP spojen u Cursor                                                                   | [x]    |
