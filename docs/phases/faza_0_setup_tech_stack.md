@@ -169,7 +169,7 @@ Definiše kako AI generiše kod za ovaj projekat. Mora biti postavljeno pre prvo
 | 9   | Supabase MCP spojen u Cursor                                                                   | [x]    |
 | 10  | LLM provajder odabran (Claude ili OpenAI), API ključ pohranjen                                 | [x]    |
 | 11  | Embedding model odabran, dimenzija zapisana                                                    | [x]    |
-| 12  | `pdf-parse`, `mammoth`, `docx` instalirani i testirani                                         | [ ]    |
+| 12  | `pdf-parse`, `mammoth`, `docx` instalirani i testirani                                         | [x]    |
 | 13  | `.cursorrules` fajl kreiran                                                                    | [x]    |
 | 14  | Shared Foundations moduli (`lib/supabase`, `lib/llm`, `lib/documents`, `lib/auth`) postavljeni | [x]    |
 | 15  | `.env.local` kreiran sa potrebnim varijablama                                                  | [x]    |
