@@ -1,0 +1,41 @@
+# Clarion — Cursor Rules
+
+Portfolio/demo project. Pre bilo kakvog predloga arhitekture koja izgleda kao "prava SaaS infrastruktura" (multi-tenancy, mikroservisi, role sistem) — stani i proveri PROJECT_MEMORY.md. Ako nije tamo, verovatno ne pripada ovom projektu.
+
+## Tech stack
+- Next.js App Router, TypeScript strict mode, Tailwind CSS, Supabase
+- Jedan Next.js app radi sve: frontend, API rute, RAG orkestraciju. Nikad ne predlagati Python/FastAPI servis ili mikroservise — vidi PROJECT_MEMORY.md, Architecture Lock.
+
+## Komponente
+- Server komponente po default-u. `"use client"` samo kad je stvarno potrebno (interaktivnost, hooks, browser API).
+
+## Supabase
+- Server klijent (`lib/supabase/server.ts`) za sve osetljive operacije: upload, ingestion, comparison, DOCX generisanje, report download.
+- Client klijent (`lib/supabase/client.ts`) samo za auth session na klijentu — nikad za direktan read/write na `documents`, `document_chunks`, `comparisons`, itd.
+
+## RLS
+- Sve DB operacije moraju poštovati RLS politike — vidi SECURITY.md §3. Anon key se ne koristi za direktan read/write iz browsera.
+
+## TypeScript
+- Koristiti generisane tipove iz Supabase-a (`types/supabase.ts`) kad god je moguće umesto ručno pisanih interfejsa za DB entitete.
+
+## Naming
+- `snake_case` u bazi i u API payload-ima (`document_id`, `comparison_id`, `cited_chunk_ids`, `source_a_ref`). Nikad `camelCase` za ova polja — vidi PROJECT_MEMORY.md.
+
+## Error handling
+- Svaka async operacija (parsing, embedding, LLM poziv, DOCX generisanje, upload) mora imati try/catch.
+- Error kodovi po BACKEND_MASTER.md §9: PARSE_FAILED, EMBEDDING_FAILED, NO_CHUNKS_RETRIEVED, COMPARISON_GENERATION_FAILED, DOCX_GENERATION_FAILED, UPLOAD_FAILED.
+- UI prikazuje plain-language poruku, nikad raw stack trace.
+
+## Env varijable
+- `NEXT_PUBLIC_` prefiks samo za zaista javne/klijentske varijable. Service role key, LLM/embedding API ključevi su uvek server-only, bez prefiksa.
+
+## Šta se NE gradi (vidi PROJECT_MEMORY.md za pun spisak)
+- Multi-tenancy / role sistem / organization_id
+- Poređenje više od dva dokumenta odjednom
+- Realtime subscriptions / WebSocket UI (izuzetak: polling za comparison status)
+- Redux, Zustand, TanStack Query, Framer Motion
+- Prisma, NestJS, Express, Redis, poseban vector store
+
+## Deljena osnova
+- RAG chat i document comparison dele isti parsing/chunking pipeline (`lib/documents/`, `documents`, `document_chunks`). Ne pisati drugi parser za comparison — proveriti da li već postoji shared modul pre nove implementacije.
