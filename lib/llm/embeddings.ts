@@ -43,7 +43,5 @@ export async function embed(
   }
 
   const json: VoyageEmbeddingResponse = await res.json();
-  return json.data
-    .sort((a, b) => a.index - b.index)
-    .map((d) => d.embedding);
+  return json.data.sort((a, b) => a.index - b.index).map((d) => d.embedding);
 }

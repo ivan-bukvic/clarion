@@ -30,7 +30,10 @@ export async function parseDocument(
 
     if (fileType === "docx") {
       const result = await mammoth.extractRawText({ buffer });
-      return { text: result.value, headings: extractHeadingsFromPlainText(result.value) };
+      return {
+        text: result.value,
+        headings: extractHeadingsFromPlainText(result.value),
+      };
     }
 
     // txt
