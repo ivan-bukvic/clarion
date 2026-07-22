@@ -1,4 +1,5 @@
 import { createBrowserClient } from "@supabase/ssr";
+import type { Database } from "@/types/supabase";
 
 /**
  * Browser Supabase client — auth session only (login/logout, reading the
@@ -7,7 +8,7 @@ import { createBrowserClient } from "@supabase/ssr";
  * See SECURITY.md §3.
  */
 export function createClient() {
-  return createBrowserClient(
+  return createBrowserClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );

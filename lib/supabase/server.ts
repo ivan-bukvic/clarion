@@ -1,16 +1,18 @@
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import type { Database } from "@/types/supabase";
 
 /**
  * Server-side Supabase client — uses the request's cookies for session auth.
- * Use this in server components and API routes for session-scoped reads/writes
- * that should respect RLS (e.g. checking who's logged in).
+ * Use for auth/session checks only. documents / document_chunks reads and
+ * writes go through createServiceRoleClient() after requireSession()
+ * (SECURITY.md §3 — no direct anon/authenticated table access).
  */
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -24,7 +26,7 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             );
           } catch {
-            // Called from a Server Component - middleware handles session refresh instead.
+            // Called from a Server Component - proxy handles session refresh instead.
           }
         },
       },
@@ -34,11 +36,11 @@ export async function createClient() {
 
 /**
  * Service-role Supabase client — bypasses RLS. Server-only, never import from
- * client components. Used for upload/ingestion, comparison, and DOCX report
- * generation routes per SECURITY.md §2.
+ * client components. Used for upload/ingestion, document reads, comparison,
+ * and DOCX report generation per SECURITY.md §2–§3.
  */
 export function createServiceRoleClient() {
-  return createSupabaseClient(
+  return createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }

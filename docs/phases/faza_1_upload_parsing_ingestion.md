@@ -75,17 +75,23 @@ UI mora prikazati jasan failed status po dokumentu, ne tihu grešku. Vidi `FRONT
 
 | #   | Zadatak                                                                      | Status |
 | --- | ---------------------------------------------------------------------------- | ------ |
-| 1   | Upload UI (drag-and-drop ili file picker), sa izborom `purpose`              | [ ]    |
-| 2   | Validacija file type i veličine na upload ruti                               | [ ]    |
-| 3   | `documents` insert nakon uspešnog upload-a u Storage                         | [ ]    |
-| 4   | PDF parsing (`pdf-parse`) implementiran i testiran                           | [ ]    |
-| 5   | DOCX parsing (`mammoth`) implementiran i testiran                            | [ ]    |
-| 6   | TXT parsing implementiran                                                    | [ ]    |
-| 7   | Chunking logika (heading-based + fixed-size fallback)                        | [ ]    |
-| 8   | Embedding poziv i insert u `document_chunks`                                 | [ ]    |
-| 9   | Status polje po dokumentu (`processing` / `ready` / `failed`) prikazano u UI | [ ]    |
-| 10  | Error handling za `UPLOAD_FAILED`, `PARSE_FAILED`, `EMBEDDING_FAILED`        | [ ]    |
-| 11  | Test: isti pipeline uspešno parsira i `corpus` i `comparison` dokumente      | [ ]    |
+| 1   | Upload UI (drag-and-drop ili file picker), sa izborom `purpose`              | [x]    |
+| 2   | Validacija file type i veličine na upload ruti                               | [x]    |
+| 3   | `documents` insert nakon uspešnog upload-a u Storage                         | [x]    |
+| 4   | PDF parsing (`pdf-parse`) implementiran i testiran                           | [x]    |
+| 5   | DOCX parsing (`mammoth`) implementiran i testiran                            | [x]    |
+| 6   | TXT parsing implementiran                                                    | [x]    |
+| 7   | Chunking logika (heading-based + fixed-size fallback)                        | [x]    |
+| 8   | Embedding poziv i insert u `document_chunks`                                 | [x]    |
+| 9   | Status polje po dokumentu (`processing` / `ready` / `failed`) prikazano u UI | [x]    |
+| 10  | Error handling za `UPLOAD_FAILED`, `PARSE_FAILED`, `EMBEDDING_FAILED`        | [x]    |
+| 11  | Test: isti pipeline uspešno parsira i `corpus` i `comparison` dokumente      | [x]    |
+
+---
+
+## Status završetka
+
+Faza 1 je kompletirana i zatvorena nakon 6 review rundi. Svi kritični nalazi rešeni i verifikovani izvršavanjem (`tsc`, `test:ingestion`, `verify-docx-table`, neautentifikovan curl na `/api/documents/upload`). Deljeni upload/parse/chunk/embed pipeline, heading-aware DOCX chunking, RLS zaključan na `service_role`, minimalan login + `proxy.ts` — sve u produkcijskom kodu.
 
 ---
 

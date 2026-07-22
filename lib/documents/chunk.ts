@@ -1,3 +1,5 @@
+import type { ParsedDocument } from "@/lib/documents/parse";
+
 export type Chunk = {
   heading: string | null;
   content: string;
@@ -8,38 +10,44 @@ const OVERLAP_CHARS = 300; // ~10%
 
 /**
  * Chunking strategy per BACKEND_MASTER.md §5:
- * - Clear heading structure detected -> split on headings
- * - Otherwise -> fixed-size chunks with ~10% overlap
- *
- * `headings` from parseDocument() is currently always empty (see parse.ts
- * note), so this always falls back to fixed-size chunking today. Revisit
- * once heading-aware DOCX parsing is wired up.
+ * - Structured DOCX sections (from heading tags) → one or more chunks per
+ *   section, preserving the section heading on every sub-chunk
+ * - Unstructured PDF/TXT (single null-heading section) → fixed-size chunks
+ *   with ~10% overlap
  */
-export function chunkText(text: string, headings: string[]): Chunk[] {
-  if (headings.length > 0) {
-    return chunkByHeadings(text, headings);
-  }
-  return chunkFixedSize(text);
-}
-
-function chunkByHeadings(text: string, _headings: string[]): Chunk[] {
-  // Placeholder until heading-aware parsing exists (see parse.ts).
-  return chunkFixedSize(text);
-}
-
-function chunkFixedSize(text: string): Chunk[] {
-  const clean = text.trim();
-  if (clean.length === 0) return [];
-
+export function chunkText(parsed: ParsedDocument): Chunk[] {
   const chunks: Chunk[] = [];
-  let start = 0;
 
-  while (start < clean.length) {
-    const end = Math.min(start + FIXED_CHUNK_SIZE_CHARS, clean.length);
-    chunks.push({ heading: null, content: clean.slice(start, end) });
-    if (end === clean.length) break;
-    start = end - OVERLAP_CHARS;
+  for (const section of parsed.sections) {
+    const trimmed = section.content.trim();
+    // Heading-only sections (next heading follows immediately) still need a
+    // searchable chunk — use the heading text as content rather than dropping.
+    const content = trimmed || section.heading?.trim() || "";
+    if (!content) continue;
+
+    if (content.length <= FIXED_CHUNK_SIZE_CHARS) {
+      chunks.push({ heading: section.heading, content });
+      continue;
+    }
+
+    for (const piece of splitFixedSize(content)) {
+      chunks.push({ heading: section.heading, content: piece });
+    }
   }
 
   return chunks;
+}
+
+function splitFixedSize(text: string): string[] {
+  const pieces: string[] = [];
+  let start = 0;
+
+  while (start < text.length) {
+    const end = Math.min(start + FIXED_CHUNK_SIZE_CHARS, text.length);
+    pieces.push(text.slice(start, end));
+    if (end === text.length) break;
+    start = end - OVERLAP_CHARS;
+  }
+
+  return pieces;
 }
