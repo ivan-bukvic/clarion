@@ -76,6 +76,8 @@ src/
   app/
     login/
       page.tsx
+    dashboard/                → Amandman v1.1 — recent activity overview + nav
+      page.tsx
     chat/
       page.tsx              → document upload (corpus) + chat interface
       loading.tsx
@@ -88,6 +90,8 @@ src/
       compare/route.ts
       compare/[id]/report/route.ts
   components/
+    layout/
+      app-sidebar.tsx        → Amandman v1.1 — Clarion brand + Ridgeline workspace name + nav
     chat/
       upload-panel.tsx
       chat-thread.tsx
@@ -117,10 +121,11 @@ src/
 
 ### Protected routes
 
-| Route      | Auth required     |
-| ---------- | ----------------- |
-| `/chat`    | Yes (single user) |
-| `/compare` | Yes (single user) |
+| Route        | Auth required     |
+| ------------ | ------------------ |
+| `/dashboard` | Yes (single user) |
+| `/chat`      | Yes (single user) |
+| `/compare`   | Yes (single user) |
 
 ### API routes (not pages)
 
@@ -221,13 +226,13 @@ Not allowed:
 
 ### Branding source
 
-Clarion's own name/logo/accent color (not a client's — Clarion itself is the product being demoed, unlike Respondly which was branded as its fictional clinic client). Ridgeline Renovations branding appears only within the demo documents themselves (quotes, project docs), not in the app chrome.
+**Updated per PROJECT_MEMORY.md Amandman v1.1.** Clarion's own name/logo/accent color remains the app's brand (not replaced by a client's — Clarion itself is the product being demoed, unlike Respondly which was branded as its fictional clinic client). Ridgeline Renovations now appears two ways: (1) within the demo documents themselves (quotes, project docs), as originally planned, and (2) as the active **workspace/client name** shown in the app chrome (e.g. sidebar/header, next to or below the Clarion logo) — similar to how a real SaaS tool shows the logged-in company name while keeping its own product branding. This is a deliberate change from v1.0: since the portfolio deliverable is now screenshots only (no Loom narration providing context), the app needs to look more convincingly like it's in real use by a client, without ever removing or hiding that Clarion is the product being demoed.
 
 ---
 
 ## 12. RESPONSIVE RULES
 
-- Desktop-first is acceptable for the build phase, but the page must not break on a phone-sized viewport, since the Loom demo may show it on mobile
+- Desktop-first is acceptable for the build phase, but the page must not break on a phone-sized viewport — portfolio screenshots (Amandman v1.1) may include a mobile view
 - Two-panel chat layout collapses to a single stacked column below `md` breakpoint
 - Findings table on `/compare` scrolls horizontally on narrow viewports rather than breaking layout
 
@@ -278,6 +283,8 @@ Do not build, regardless of how small the addition seems:
 
 > If a feature idea sounds like it belongs in a "real SaaS product," it does not belong in Clarion. This is a demo of two specific patterns, not a product.
 
+**Exception (PROJECT_MEMORY.md Amandman v1.1):** a minimal **Dashboard** landing page (`/dashboard`) plus a persistent sidebar for navigation are deliberately in scope — added because the portfolio deliverable is now screenshots only, and a bare two-route app doesn't read as a real product in a static screenshot the way it would with Loom narration. The dashboard shows recent documents and recent comparisons (read-only, from existing tables) plus quick links to `/chat` and `/compare` — nothing else. It is explicitly NOT the "Analytics or reporting views" item above: no charts, no metrics, no usage stats. Keep it to a single simple page; do not let it grow into anything from the rest of this list.
+
 ---
 
 ## 16. FINAL FRONTEND PHILOSOPHY
@@ -294,7 +301,41 @@ Biggest frontend risks for this project:
 
 - Polishing UI during the Cursor/backend phase instead of deferring it to the dedicated Claude Code pass
 - Letting a UI polish session drift into backend routes or logic, since there's no sandbox wall stopping it
-- A findings table or chat citation UI that's technically correct but not legible enough for a 30-second Loom viewer to follow
+- A findings table or chat citation UI that's technically correct but not legible enough for a static screenshot to read clearly on its own
+
+---
+
+## 17. DASHBOARD & SIDEBAR NAVIGATION (Amandman v1.1)
+
+> Added after Faza 2, before Faza 3 — see `PROJECT_MEMORY.md` Amandman v1.1 for the full rationale (screenshots-only portfolio, no Loom narration). This section is additive; it does not change anything in §1–§16.
+
+### Scope
+
+A persistent sidebar (visible on `/dashboard`, `/chat`, `/compare`) plus one new page, `/dashboard`. This is the only scope addition from the original two-route plan — everything in §15 "What Not To Build" still applies beyond it.
+
+### Sidebar — must contain
+
+- Clarion name/logo (brand identity — never removed or replaced)
+- "Ridgeline Renovations" shown as the active workspace/client name (static text is sufficient — no real workspace-switching logic, no multi-tenant model, see `PROJECT_MEMORY.md`)
+- Navigation links: Dashboard, Chat, Compare
+- Collapses sensibly on mobile, consistent with the responsive rules in §12
+
+### Dashboard page (`/dashboard`) — must show
+
+The point of this page isn't just "looks like a real app" — it should visibly demonstrate that AI is doing real work for Ridgeline, not just storing files:
+
+- Welcome header: "Welcome back, Ridgeline Renovations" + a short tagline naming the AI value prop, e.g. "AI-powered document intelligence — chat with your project files or compare vendor quotes in seconds."
+- Quick stats row: document count, comparison count, chat conversation count — but the comparisons stat pairs a *findings* count alongside it (e.g. "3 comparisons · 11 differences found"), aggregated from the existing `comparison_findings` table. This is a real number from real AI output, not decoration — it's the cheapest way to make the AI's actual value visible at a glance.
+- Recent documents (a short list, read from the existing `documents` table — title, purpose, status)
+- Recent comparisons (a short list, read from the existing `comparisons` table — documents compared, status, date, and a per-row findings count from `comparison_findings`, same reasoning as the stats row)
+- Quick links into `/chat` and `/compare`
+- Empty state if there's no data yet, consistent with §9's empty-state rules
+
+All numbers shown must come from real aggregation queries against existing tables — no invented/hardcoded stats (see `PROJECT_MEMORY.md` Demo Integrity Rule).
+
+### Explicitly not part of this addition
+
+No charts, metrics, or usage stats (that's the "Analytics or reporting views" item in §15, still prohibited). No settings, no real workspace switching, no additional pages beyond `/dashboard` itself. If a dashboard idea starts to look like a real product feature rather than a static overview, it doesn't belong here — same test as §15.
 
 ---
 

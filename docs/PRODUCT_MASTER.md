@@ -18,7 +18,7 @@ Product Master Specification
 
 Clarion is a portfolio demo project: an AI document intelligence tool that proves two connected capability patterns on top of the same document-processing foundation — (1) RAG chat with citation-backed answers over uploaded documents, and (2) structured document comparison that outputs a polished Word report.
 
-**This is not a product meant for real users.** The goal is a convincing, honest, working demo — two short Loom recordings (one per feature) and a live deployed URL — that can be referenced directly in proposals ("I built something similar to this").
+**This is not a product meant for real users.** The goal is a convincing, honest, working demo — portfolio screenshots of both features plus a live deployed URL — that can be referenced directly in proposals ("I built something similar to this"). **Updated per `PROJECT_MEMORY.md` Amandman v1.1:** the original plan called for two short Loom recordings; the deliverable is now static screenshots instead, which is why the app chrome carries more of the "real client" context (see `FRONTEND_MASTER.md` §11 and §17).
 
 ### Why this project (context)
 
@@ -125,12 +125,12 @@ Target: 5–7 focused working days — roughly 2–3 days for the RAG chat featu
 
 These directly affect what "done" looks like for each module — see `EXECUTION_PHASES.md` for where they land in the build order.
 
-- Two short Loom recordings (30–60 seconds each): (1) upload documents → RAG chat with a visible citation, (2) upload two documents → generated Word report with findings
+- **Portfolio screenshots** (Amandman v1.1 — replaces the original two-Loom-recording plan): clear screenshots covering (1) upload documents → RAG chat with a visible citation, (2) upload two documents → generated Word report with findings, plus the dashboard/sidebar chrome (see `FRONTEND_MASTER.md` §17) that gives the screenshots more real-client context now that there's no video narration
 - Deployed to a **real URL** (Vercel), optionally behind a basic password
 - **Realistic placeholder documents** — real-sounding contractor quotes and project documents, not lorem ipsum or "test test test"
 - The generated Word report must look clean and professional — this is the artifact a client remembers most, so it gets disproportionate polish attention relative to its build complexity
 - A short **README** covering how to run it, the architecture, the Cursor → Claude Code UI polish workflow used, and what would change for a real client
-- **Transparency in proposals**: disclosed as a demo/portfolio build, with the architecture presented as identical to what a client would receive, adapted to their own documents and report template
+- **Transparency in proposals**: disclosed as a demo/portfolio build, with the architecture presented as identical to what a client would receive, adapted to their own documents and report template. Without Loom narration to state this out loud, the README and portfolio case-study text carry that disclosure explicitly (see `PROJECT_MEMORY.md` Demo Integrity Rule)
 
 **What NOT to do:** fake user counts, invented testimonials, or implying a real client exists behind this — same rule as every other portfolio project.
 
@@ -144,9 +144,9 @@ These directly affect what "done" looks like for each module — see `EXECUTION_
 | 4   | Chat interface with citations                                                       | Core value #1, UI half                                        |
 | 5   | Comparison logic (two-document diff analysis)                                       | Core value #2                                                 |
 | 6   | DOCX report generation                                                              | Core value #2, technically heaviest                           |
-| 7   | Backend build complete → dedicated Claude Code pass for frontend polish (same repo) | See §12                                                       |
+| 7   | Backend build complete → dedicated Claude Code pass for frontend polish (same repo) | See §12; polish pass now also covers dashboard/sidebar chrome, see `FRONTEND_MASTER.md` §17 |
 | 8   | Demo polish (branding, README, deploy)                                              | Makes it look like a real product                             |
-| 9   | Loom recordings (×2) + case study                                                   | The actual proposal-ready deliverable                         |
+| 9   | Portfolio screenshots + case study                                                   | Amandman v1.1 — replaces the original Loom recordings; the actual proposal-ready deliverable |
 
 Full phase breakdown with exit criteria: see `EXECUTION_PHASES.md`.
 

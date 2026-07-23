@@ -18,6 +18,20 @@
 
 ---
 
+## Amandman v1.1 — Screenshotovi umesto Loom-a, realističniji app chrome
+
+Odluka doneta nakon Faze 2, pre Faze 3: portfolio deliverable više neće uključivati Loom video snimke — samo screenshotovi aplikacije. Pošto screenshotovi nemaju naraciju koja objašnjava kontekst, app treba da izgleda uverljivije kao da je rađen za pravog klijenta:
+
+- Clarion ostaje brend alata (ime/logo u chrome-u) — Ridgeline Renovations se sada dodatno prikazuje i kao aktivan **workspace/klijent** u app chrome-u (npr. header/sidebar), ne samo unutar sadržaja dokumenata kao ranije. Vidi `FRONTEND_MASTER.md` §11.
+- Dodaje se minimalna **Dashboard** stranica (pregled nedavnih dokumenata/poređenja, brzi linkovi ka `/chat` i `/compare`) i trajni sidebar za navigaciju. Ovo je jedini dodatak van originalnog dvoru-rutnog obima — namerno ograničen, ne otvara vrata za dodatne SaaS-stil stranice. Vidi `FRONTEND_MASTER.md` §15 i §17.
+- Poenta Dashboard-a nije samo "izgleda kao prava app" — treba vidljivo da pokaže da AI stvarno radi posao za Ridgeline (npr. broj pronađenih razlika iz `comparison_findings`, ne samo broj fajlova), ne da je Clarion puko skladište dokumenata. Svi brojevi moraju biti stvarna agregacija iz baze, nikad izmišljeni.
+- Sve ostalo iz "Lock — Šta se NE gradi" ispod ostaje na snazi bez izuzetka (settings, role sistem, notifikacije, analytics dashboard, itd.).
+- Demo Integrity Rule i dalje važi — bez Loom naracije, transparentnost da je ovo portfolio/demo rad sada mora biti eksplicitno navedena u README-u i portfolio case-study tekstu, ne samo podrazumevana kroz video kontekst.
+
+> Ovo je svesna, dokumentovana promena, ne tiho odstupanje.
+
+---
+
 ## Architecture Lock — Struktura proizvoda
 
 Clarion je **jedan Next.js app** koji radi sve:
@@ -89,6 +103,8 @@ Ne uvoditi:
 
 > Pravilo: ako feature deluje kao infrastruktura za skalu koju ovaj projekat nikad neće videti — ne pripada ovde.
 
+**Izuzetak (Amandman v1.1):** minimalna Dashboard stranica (pregled nedavne aktivnosti + navigacija ka `/chat` i `/compare`) je namerno dodata radi realističnijeg izgleda za screenshot-portfolio. Ovo NIJE "kompleksan analytics dashboard" sa liste iznad — nema grafikona, metrika, ni izveštaja, samo lista nedavnih stavki i linkovi. Sve ostalo sa liste ostaje zabranjeno bez izuzetka.
+
 ---
 
 ## Lock — Naming Convention
@@ -135,7 +151,7 @@ Kod komentari, commit poruke, i `docs/` specifikacija ostaju na srpskom — to j
 Simple > clever
 Working demo > scalable product
 Realni demo dokumenti > lorem ipsum
-Loom + live deploy > interaktivan demo
+Screenshotovi + live deploy > interaktivan demo (Amandman v1.1 — ranije: Loom + live deploy)
 Čist, čitljiv DOCX izveštaj > kompleksan template
 ```
 
@@ -148,6 +164,7 @@ Sve što se pokazuje u Loom-u i proposal-u mora biti iskreno:
 - Realni (ne lažni) demo dokumenti, pravi live deploy — ovo NIJE laganje, ovo je legitiman demo setup
 - **Nikad**: lažni broj korisnika, izmišljeni testimonijali, ili implikacija da postoji pravi klijent
 - Proposal-i moraju biti transparentni da je ovo demo/portfolio projekat, ne pravi klijentski rad
+- Bez Loom naracije (Amandman v1.1), ta transparentnost mora biti eksplicitna u README-u i portfolio tekstu koji prati screenshotove — ne sme se osloniti na to da je "očigledno" iz konteksta
 
 ---
 
@@ -160,6 +177,7 @@ Najveći rizici projekta:
 - Potcenjivanje vremena za DOCX generisanje sa formatiranjem — obično traje duže nego što deluje
 - UI polish sesija koja skrene u backend kod umesto da ostane na UI-ju
 - Gubljenje fokusa sa 2 core stvari koje projekat treba da dokaže: RAG chat sa citatima, i document comparison sa generisanim izveštajem
+- Dashboard/sidebar dodatak (Amandman v1.1) koji prerasta u stvarne nove funkcije umesto da ostane pregled + navigacija
 
 ---
 
