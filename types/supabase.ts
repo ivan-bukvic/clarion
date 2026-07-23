@@ -64,6 +64,86 @@ export type Database = {
         }
         Relationships: []
       }
+      comparison_findings: {
+        Row: {
+          category: Database["public"]["Enums"]["finding_category"]
+          comparison_id: string
+          description: string
+          id: string
+          source_a_ref: string | null
+          source_b_ref: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["finding_category"]
+          comparison_id: string
+          description: string
+          id?: string
+          source_a_ref?: string | null
+          source_b_ref?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["finding_category"]
+          comparison_id?: string
+          description?: string
+          id?: string
+          source_a_ref?: string | null
+          source_b_ref?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comparison_findings_comparison_id_fkey"
+            columns: ["comparison_id"]
+            isOneToOne: false
+            referencedRelation: "comparisons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comparisons: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          document_a_id: string
+          document_b_id: string
+          id: string
+          status: Database["public"]["Enums"]["comparison_status"]
+          summary: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          document_a_id: string
+          document_b_id: string
+          id?: string
+          status?: Database["public"]["Enums"]["comparison_status"]
+          summary?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          document_a_id?: string
+          document_b_id?: string
+          id?: string
+          status?: Database["public"]["Enums"]["comparison_status"]
+          summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comparisons_document_a_id_fkey"
+            columns: ["document_a_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comparisons_document_b_id_fkey"
+            columns: ["document_b_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       document_chunks: {
         Row: {
           content: string
@@ -156,9 +236,16 @@ export type Database = {
       }
     }
     Enums: {
+      comparison_status: "processing" | "completed" | "failed"
       document_file_type: "pdf" | "docx" | "txt"
       document_purpose: "corpus" | "comparison"
       document_status: "processing" | "ready" | "failed"
+      finding_category:
+        | "price_difference"
+        | "missing_item"
+        | "scope_difference"
+        | "term_difference"
+        | "other"
       message_role: "user" | "assistant"
     }
     CompositeTypes: {
@@ -287,9 +374,17 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      comparison_status: ["processing", "completed", "failed"],
       document_file_type: ["pdf", "docx", "txt"],
       document_purpose: ["corpus", "comparison"],
       document_status: ["processing", "ready", "failed"],
+      finding_category: [
+        "price_difference",
+        "missing_item",
+        "scope_difference",
+        "term_difference",
+        "other",
+      ],
       message_role: ["user", "assistant"],
     },
   },

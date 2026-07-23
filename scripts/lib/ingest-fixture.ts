@@ -9,6 +9,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { parseDocument } from "../../lib/documents/parse";
 import { chunkText } from "../../lib/documents/chunk";
+import { chunkCreatedAtTimestamps } from "../../lib/documents/chunk-timestamps";
 import { embed } from "../../lib/llm/embeddings";
 import type { Database } from "../../types/supabase";
 
@@ -30,6 +31,7 @@ export async function ingestFixture(opts: {
 }) {
   const supabase = serviceClient();
   const documentId = crypto.randomUUID();
+  const title = opts.sourceFile.replace(/\.[^.]+$/, "");
   // Same path rule as upload route: server-generated id + validated ext only
   const storagePath = `${opts.purpose}/${documentId}.${opts.ext}`;
 
@@ -43,7 +45,7 @@ export async function ingestFixture(opts: {
 
   const { error: insertError } = await supabase.from("documents").insert({
     id: documentId,
-    title: opts.sourceFile.replace(/\.[^.]+$/, ""),
+    title,
     source_file: opts.sourceFile,
     file_type: opts.fileType,
     purpose: opts.purpose,
@@ -61,11 +63,13 @@ export async function ingestFixture(opts: {
     chunks.map((c) => c.content),
     "document"
   );
+  const createdAts = chunkCreatedAtTimestamps(chunks.length);
   const rows = chunks.map((chunk, i) => ({
     document_id: documentId,
     heading: chunk.heading,
     content: chunk.content,
     embedding: JSON.stringify(embeddings[i]) as unknown as string,
+    created_at: createdAts[i],
   }));
 
   const { error: chunkError } = await supabase
@@ -81,6 +85,7 @@ export async function ingestFixture(opts: {
 
   return {
     documentId,
+    title,
     chunkCount: chunks.length,
     headings: parsed.headings,
     text: parsed.text,

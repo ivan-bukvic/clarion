@@ -72,18 +72,18 @@ Puna specifikacija UI-ja: `FRONTEND_MASTER.md` §8.
 
 | #   | Zadatak                                                                    | Status |
 | --- | -------------------------------------------------------------------------- | ------ |
-| 1   | `comparisons` i `comparison_findings` tabele                               | [ ]    |
-| 2   | UI za izbor tačno dva dokumenta (`purpose = comparison`)                   | [ ]    |
-| 3   | Retrieval celog sadržaja oba dokumenta (ne top-k)                          | [ ]    |
-| 4   | Strukturisan comparison prompt (kategorije nalaza)                         | [ ]    |
-| 5   | LLM poziv i parsiranje strukturisanog izlaza                               | [ ]    |
-| 6   | Insert nalaza u `comparison_findings`                                      | [ ]    |
-| 7   | `comparisons.summary` i `status = 'completed'` update                      | [ ]    |
-| 8   | Trigger DOCX generisanja nakon completion-a                                | [ ]    |
-| 9   | Processing UI sa vidljivim progress indikatorom                            | [ ]    |
-| 10  | Findings tabela u UI (kategorija, opis, source refs)                       | [ ]    |
-| 11  | Failed stanje + retry opcija                                               | [ ]    |
-| 12  | Test: poređenje dve realne demo ponude vraća smislene, kategorisane nalaze | [ ]    |
+| 1   | `comparisons` i `comparison_findings` tabele                               | [x]    |
+| 2   | UI za izbor tačno dva dokumenta (`purpose = comparison`)                   | [x]    |
+| 3   | Retrieval celog sadržaja oba dokumenta (ne top-k)                          | [x]    |
+| 4   | Strukturisan comparison prompt (kategorije nalaza)                         | [x]    |
+| 5   | LLM poziv i parsiranje strukturisanog izlaza                               | [x]    |
+| 6   | Insert nalaza u `comparison_findings`                                      | [x]    |
+| 7   | `comparisons.summary` i `status = 'completed'` update                      | [x]    |
+| 8   | Trigger DOCX generisanja nakon completion-a (stub hook → Faza 4)            | [x]    |
+| 9   | Processing UI sa vidljivim progress indikatorom                            | [x]    |
+| 10  | Findings tabela u UI (kategorija, opis, source refs)                       | [x]    |
+| 11  | Failed stanje + retry opcija                                               | [x]    |
+| 12  | Test: poređenje dve realne demo ponude vraća smislene, kategorisane nalaze | [x]    |
 
 ---
 

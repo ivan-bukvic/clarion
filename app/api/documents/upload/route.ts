@@ -4,6 +4,7 @@ import { requireSession } from "@/lib/auth/guard";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { parseDocument } from "@/lib/documents/parse";
 import { chunkText } from "@/lib/documents/chunk";
+import { chunkCreatedAtTimestamps } from "@/lib/documents/chunk-timestamps";
 import { embed } from "@/lib/llm/embeddings";
 import type { Database } from "@/types/supabase";
 
@@ -192,11 +193,13 @@ export async function POST(request: Request) {
         );
       }
 
+      const createdAts = chunkCreatedAtTimestamps(chunks.length);
       const rows = chunks.map((chunk, i) => ({
         document_id: documentId,
         heading: chunk.heading,
         content: chunk.content,
         embedding: JSON.stringify(embeddings[i]) as unknown as string,
+        created_at: createdAts[i],
       }));
 
       const { error: chunkError } = await supabase
