@@ -27,7 +27,7 @@ Portfolio/demo project. Pre bilo kakvog predloga arhitekture koja izgleda kao "p
 
 ## Error handling
 - Svaka async operacija (parsing, embedding, LLM poziv, DOCX generisanje, upload) mora imati try/catch.
-- Error kodovi po BACKEND_MASTER.md §9: PARSE_FAILED, EMBEDDING_FAILED, NO_CHUNKS_RETRIEVED, COMPARISON_GENERATION_FAILED, DOCX_GENERATION_FAILED, UPLOAD_FAILED.
+- Error kodovi po BACKEND_MASTER.md §9: PARSE_FAILED, EMBEDDING_FAILED, NO_CHUNKS_RETRIEVED, CHAT_GENERATION_FAILED, COMPARISON_GENERATION_FAILED, DOCX_GENERATION_FAILED, UPLOAD_FAILED.
 - UI prikazuje plain-language poruku, nikad raw stack trace.
 
 ## Env varijable

@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:parsing": "node scripts/smoke-test-parsing.mjs",
-    "test:ingestion": "tsx --env-file=.env.local scripts/smoke-test-ingestion.ts"
+    "test:ingestion": "tsx --env-file=.env.local scripts/smoke-test-ingestion.ts",
+    "test:chat": "tsx --env-file=.env.local scripts/smoke-test-chat.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.5",

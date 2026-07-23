@@ -266,6 +266,7 @@ Triggered automatically when a comparison completes (§7):
 | `PARSE_FAILED`                 | `pdf-parse` or `mammoth` threw or returned empty content on an uploaded file                                         |
 | `EMBEDDING_FAILED`             | Embedding call failed during ingestion or query                                                                      |
 | `NO_CHUNKS_RETRIEVED`          | RAG chat retrieval returned nothing above similarity threshold — response should say "I don't know," not hallucinate |
+| `CHAT_GENERATION_FAILED`       | LLM call for chat generation failed or returned an empty/error response                                              |
 | `COMPARISON_GENERATION_FAILED` | LLM call for comparison analysis failed or returned unparseable structured output                                    |
 | `DOCX_GENERATION_FAILED`       | `docx` package threw while building the report file                                                                  |
 | `UPLOAD_FAILED`                | Supabase Storage upload failed                                                                                       |

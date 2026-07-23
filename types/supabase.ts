@@ -14,6 +14,56 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_messages: {
+        Row: {
+          chat_session_id: string
+          cited_chunk_ids: string[]
+          content: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["message_role"]
+        }
+        Insert: {
+          chat_session_id: string
+          cited_chunk_ids?: string[]
+          content: string
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["message_role"]
+        }
+        Update: {
+          chat_session_id?: string
+          cited_chunk_ids?: string[]
+          content?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["message_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_chat_session_id_fkey"
+            columns: ["chat_session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_sessions: {
+        Row: {
+          created_at: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       document_chunks: {
         Row: {
           content: string
@@ -87,12 +137,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      match_document_chunks: {
+        Args: {
+          match_count: number
+          min_similarity: number
+          query_embedding: string
+        }
+        Returns: {
+          content: string
+          document_id: string
+          // Hand-patched: generate_typescript_types emits RETURNS TABLE columns
+          // as non-nullable; document_chunks.heading is nullable (PDF/TXT).
+          // Re-apply after every future type regeneration.
+          heading: string | null
+          id: string
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       document_file_type: "pdf" | "docx" | "txt"
       document_purpose: "corpus" | "comparison"
       document_status: "processing" | "ready" | "failed"
+      message_role: "user" | "assistant"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -223,6 +290,7 @@ export const Constants = {
       document_file_type: ["pdf", "docx", "txt"],
       document_purpose: ["corpus", "comparison"],
       document_status: ["processing", "ready", "failed"],
+      message_role: ["user", "assistant"],
     },
   },
 } as const

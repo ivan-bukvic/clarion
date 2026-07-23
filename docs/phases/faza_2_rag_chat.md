@@ -43,9 +43,11 @@ Puna specifikacija UI-ja: `FRONTEND_MASTER.md` §7.
 
 ## Error handling (ova faza)
 
-| Kod                   | Trigger                                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------------------------- |
-| `NO_CHUNKS_RETRIEVED` | Retrieval nije vratio ništa iznad similarity threshold-a — odgovor mora reći "ne znam", ne halucinirati |
+| Kod                      | Trigger                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `NO_CHUNKS_RETRIEVED`    | Retrieval nije vratio ništa iznad similarity threshold-a — odgovor mora reći "ne znam", ne halucinirati |
+| `EMBEDDING_FAILED`       | Query embedding ili similarity search nije uspeo                                                        |
+| `CHAT_GENERATION_FAILED` | LLM poziv za chat generaciju je pao ili vratio prazan odgovor                                           |
 
 ---
 
@@ -53,16 +55,22 @@ Puna specifikacija UI-ja: `FRONTEND_MASTER.md` §7.
 
 | #   | Zadatak                                                                 | Status |
 | --- | ----------------------------------------------------------------------- | ------ |
-| 1   | `chat_sessions` i `chat_messages` tabele                                | [ ]    |
-| 2   | Query embedding + similarity search (top-k, k=3–5)                      | [ ]    |
-| 3   | Prompt construction sa system instrukcijama (odgovor samo iz chunk-ova) | [ ]    |
-| 4   | LLM poziv i insert assistant poruke sa `cited_chunk_ids`                | [ ]    |
-| 5   | Chat UI — dvopanelni layout (dokumenti / thread)                        | [ ]    |
-| 6   | Citation badge/referenca na svakoj assistant poruci                     | [ ]    |
-| 7   | "Ne znam" fallback kad nema retrieved chunk-ova                         | [ ]    |
-| 8   | Prazno stanje za chat pre upload-a                                      | [ ]    |
-| 9   | `loading.tsx` skeleton za `/chat`                                       | [ ]    |
-| 10  | Test: pitanje van korpusa vraća "ne znam", ne izmišljen odgovor         | [ ]    |
+| 1   | `chat_sessions` i `chat_messages` tabele                                | [x]    |
+| 2   | Query embedding + similarity search (top-k, k=3–5)                      | [x]    |
+| 3   | Prompt construction sa system instrukcijama (odgovor samo iz chunk-ova) | [x]    |
+| 4   | LLM poziv i insert assistant poruke sa `cited_chunk_ids`                | [x]    |
+| 5   | Chat UI — dvopanelni layout (dokumenti / thread)                        | [x]    |
+| 6   | Citation badge/referenca na svakoj assistant poruci                     | [x]    |
+| 7   | "Ne znam" fallback kad nema retrieved chunk-ova                         | [x]    |
+| 8   | Prazno stanje za chat pre upload-a                                      | [x]    |
+| 9   | `loading.tsx` skeleton za `/chat`                                       | [x]    |
+| 10  | Test: pitanje van korpusa vraća "ne znam", ne izmišljen odgovor         | [x]    |
+
+---
+
+## Status završetka
+
+Faza 2 je kompletirana i zatvorena nakon 3 review runde. Svi kritični nalazi rešeni ili svesno dokumentovani kao known limitation (concurrent chat bez locking-a — nova sesija i ista postojeća sesija), verifikovano izvršavanjem (`tsc`, `eslint`, `test:chat`, order verify za batch insert). Migracija `chat_sessions` / `chat_messages` + `match_document_chunks`, `lib/rag/*`, `POST /api/chat` sa strukturiranim kodovima (`EMBEDDING_FAILED`, `NO_CHUNKS_RETRIEVED` kao uspešan turn, `CHAT_GENERATION_FAILED`), atomski batch insert sa eksplicitnim `created_at`, deljeni `scripts/lib/ingest-fixture.ts`, dvopanelni chat UI sa citation badge-ovima — sve u produkcijskom kodu.
 
 ---
 
