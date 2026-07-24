@@ -145,12 +145,14 @@ Chunking strategy: for documents with clear headings (markdown, structured DOCX)
 
 ### `generated_reports`
 
-| Field         | Type        | Notes                                          |
-| ------------- | ----------- | ---------------------------------------------- |
-| id            | uuid        | PK                                             |
-| comparison_id | uuid        | FK → comparisons                               |
-| file_url      | text        | Supabase Storage URL for the generated `.docx` |
-| created_at    | timestamptz |                                                |
+| Field         | Type          | Notes                                                                 |
+| ------------- | ------------- | --------------------------------------------------------------------- |
+| id            | uuid          | PK                                                                    |
+| comparison_id | uuid          | FK → comparisons (unique)                                             |
+| file_url      | text          | nullable until ready — Storage object path (not a public URL)         |
+| status        | report_status | `pending` \| `ready` \| `failed` — lifecycle for async DOCX generation |
+| error_message | text          | nullable — set when status = `failed`                                 |
+| created_at    | timestamptz   | refreshed on regenerate                                               |
 
 ---
 
@@ -242,20 +244,25 @@ Full-document-in-prompt (rather than retrieval-based) is intentional here: compa
 
 ## 8. DOCX REPORT GENERATION
 
-Triggered automatically when a comparison completes (§7):
+Triggered automatically when a comparison completes (§7). The API route
+schedules generation via Next.js `after()` so `POST /api/compare` returns
+as soon as findings are saved (`generated_reports.status = pending`); the
+DOCX build/upload runs after the response is sent:
 
 ```
-1. Fetch comparisons row + all comparison_findings for it
-2. Build .docx using the `docx` npm package:
+1. Insert generated_reports row with status = pending (synchronous, in runComparison)
+2. after(): Fetch comparisons row + all comparison_findings for it
+3. Build .docx using the `docx` npm package:
    - Title (document names being compared)
    - Summary paragraph (comparisons.summary)
    - Findings table (category, description, source A ref, source B ref)
-3. Upload generated file to Supabase Storage
-4. Insert into generated_reports (file_url)
+4. Upload generated file to Supabase Storage
+5. Upsert generated_reports (file_url, status = ready | failed)
 ```
 
 - Clean, structured formatting — headings, a real table, readable spacing — not a full brand-matching template (no client logo/colors; see `PRODUCT_MASTER.md` §7)
 - This is the single most-scrutinized output of the whole demo — allocate real polish time here even though it looks like "just formatting," per `PROJECT_MEMORY.md`
+- UI polls `GET /api/compare/[id]/report/status` while pending (allowed exception, FRONTEND_MASTER.md §10). A Retry control is always available while pending (not only on failed), so a killed `after()` task that never writes `failed` still has an escape hatch.
 
 ---
 

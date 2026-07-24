@@ -55,16 +55,16 @@ Failed DOCX generisanje ne sme da sakrije već završen comparison — nalazi os
 
 | #   | Zadatak                                                                   | Status |
 | --- | ------------------------------------------------------------------------- | ------ |
-| 1   | `generated_reports` tabela                                                | [ ]    |
-| 2   | `docx` paket instaliran i konfigurisan                                    | [ ]    |
-| 3   | Template: naslov + rezime + tabela nalaza                                 | [ ]    |
-| 4   | Automatski trigger nakon `comparisons.status = 'completed'`               | [ ]    |
-| 5   | Upload generisanog fajla u Supabase Storage                               | [ ]    |
-| 6   | Server-side download ruta (`/api/compare/[id]/report`) sa proverom sesije | [ ]    |
-| 7   | "Download Report" dugme u UI                                              | [ ]    |
-| 8   | Error handling za `DOCX_GENERATION_FAILED`, sa retry opcijom              | [ ]    |
-| 9   | Vizuelna provera: izveštaj otvoren u Word-u izgleda čisto i profesionalno | [ ]    |
-| 10  | Test: generisan izveštaj za realno demo poređenje (Ridgeline ponude)      | [ ]    |
+| 1   | `generated_reports` tabela                                                | [x]    |
+| 2   | `docx` paket instaliran i konfigurisan                                    | [x]    |
+| 3   | Template: naslov + rezime + tabela nalaza                                 | [x]    |
+| 4   | Automatski trigger nakon `comparisons.status = 'completed'`               | [x]    |
+| 5   | Upload generisanog fajla u Supabase Storage                               | [x]    |
+| 6   | Server-side download ruta (`/api/compare/[id]/report`) sa proverom sesije | [x]    |
+| 7   | "Download Report" dugme u UI                                              | [x]    |
+| 8   | Error handling za `DOCX_GENERATION_FAILED`, sa retry opcijom              | [x]    |
+| 9   | Vizuelna provera: izveštaj otvoren u Word-u izgleda čisto i profesionalno | [x]    |
+| 10  | Test: generisan izveštaj za realno demo poređenje (Ridgeline ponude)      | [x]    |
 
 ---
 

@@ -8,19 +8,25 @@ import {
   RECORD_COMPARISON_TOOL_NAME,
 } from "@/lib/compare/prompt";
 import { parseComparisonOutput } from "@/lib/compare/findings";
-import { triggerReportGeneration } from "@/lib/compare/report-trigger";
 
 type ComparisonRow = Database["public"]["Tables"]["comparisons"]["Row"];
 type FindingRow = Database["public"]["Tables"]["comparison_findings"]["Row"];
 type DocumentRef = { id: string; title: string };
+type ReportStatus = Database["public"]["Enums"]["report_status"];
 
 export type CompareRunResult =
-  | { ok: true; comparison: ComparisonRow; findings: FindingRow[] }
+  | {
+      ok: true;
+      comparison: ComparisonRow;
+      findings: FindingRow[];
+      report: { status: ReportStatus };
+    }
   | {
       ok: false;
       comparison: ComparisonRow | null;
       findings: FindingRow[];
       message: string;
+      report: { status: ReportStatus };
     };
 
 /**
@@ -29,6 +35,11 @@ export type CompareRunResult =
  * scripts so this sequence can't drift between them (Faza 1/2 review
  * lesson — see scripts/lib/ingest-fixture.ts for the same pattern applied
  * to ingestion).
+ *
+ * Report DOCX generation is NOT awaited here — the API route schedules it
+ * via after() so the client gets findings as soon as the comparison is
+ * completed. This function only inserts a generated_reports row with
+ * status='pending' so the UI can poll for ready/failed.
  *
  * Callers are responsible for validating documentA/documentB (existence,
  * purpose = comparison, status = ready) before calling this — that's an
@@ -56,6 +67,7 @@ export async function runComparison(
       comparison: null,
       findings: [],
       message: "Could not start the comparison. Please try again.",
+      report: { status: "failed" },
     };
   }
 
@@ -180,14 +192,43 @@ export async function runComparison(
       );
     }
 
+    // Isolated from the outer try/catch: a throw here must never mark the
+    // already-completed comparison as failed.
+    let reportStatus: ReportStatus = "failed";
     try {
-      triggerReportGeneration(comparisonId);
-    } catch (triggerErr) {
-      // Stub must never fail the completed comparison response.
-      console.error("Failed to trigger report generation (non-fatal)", triggerErr);
+      const { error: pendingError } = await supabase
+        .from("generated_reports")
+        .upsert(
+          {
+            comparison_id: comparisonId,
+            status: "pending",
+            file_url: null,
+            error_message: null,
+          },
+          { onConflict: "comparison_id" }
+        );
+
+      if (pendingError) {
+        console.error(
+          "Failed to insert pending generated_reports row (non-fatal)",
+          pendingError
+        );
+      } else {
+        reportStatus = "pending";
+      }
+    } catch (pendingErr) {
+      console.error(
+        "Failed to insert pending generated_reports row (non-fatal)",
+        pendingErr
+      );
     }
 
-    return { ok: true, comparison: completedRow, findings };
+    return {
+      ok: true,
+      comparison: completedRow,
+      findings,
+      report: { status: reportStatus },
+    };
   } catch (err) {
     console.error("COMPARISON_GENERATION_FAILED", err);
     return finishFailed(
@@ -244,5 +285,11 @@ async function finishFailed(
     }
   }
 
-  return { ok: false, comparison: failed, findings, message };
+  return {
+    ok: false,
+    comparison: failed,
+    findings,
+    message,
+    report: { status: "failed" },
+  };
 }

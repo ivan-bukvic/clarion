@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Tables } from "@/types/supabase";
+import type { Database, Tables } from "@/types/supabase";
 import { FindingsTable } from "@/components/compare/findings-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,15 +15,18 @@ type FindingRow = Tables<"comparison_findings">;
 
 type Slot = "a" | "b";
 
+type ReportStatus = Database["public"]["Enums"]["report_status"];
+
 type CompareResult = {
   comparison: ComparisonRow;
   findings: FindingRow[];
+  reportStatus: ReportStatus;
 };
 
 const PROGRESS_STEPS = [
   "Retrieving documents…",
   "Analyzing differences…",
-  "Finalizing findings…",
+  "Generating report…",
 ] as const;
 
 export function CompareUpload({
@@ -157,6 +160,7 @@ export function CompareUpload({
         code?: string;
         comparison?: ComparisonRow;
         findings?: FindingRow[];
+        report?: { status?: ReportStatus };
       };
 
       if (!res.ok) {
@@ -166,9 +170,16 @@ export function CompareUpload({
         // When the route marked comparisons.status = 'failed', surface that
         // row so FindingsTable can show Retry (FRONTEND_MASTER.md §8).
         if (json.comparison) {
+          const status = json.report?.status;
           setResult({
             comparison: json.comparison,
             findings: json.findings ?? [],
+            reportStatus:
+              status === "pending" ||
+              status === "ready" ||
+              status === "failed"
+                ? status
+                : "failed",
           });
         }
         return;
@@ -180,9 +191,14 @@ export function CompareUpload({
       }
 
       setProgressValue(100);
+      const status = json.report?.status;
       setResult({
         comparison: json.comparison,
         findings: json.findings ?? [],
+        reportStatus:
+          status === "pending" || status === "ready" || status === "failed"
+            ? status
+            : "pending",
       });
     } catch {
       setCompareError("Comparison failed. Please try again.");
@@ -255,6 +271,12 @@ export function CompareUpload({
         <FindingsTable
           comparison={result.comparison}
           findings={result.findings}
+          reportStatus={result.reportStatus}
+          onReportStatusChange={(status) => {
+            setResult((prev) =>
+              prev ? { ...prev, reportStatus: status } : prev
+            );
+          }}
           onRetry={
             result.comparison.status === "failed"
               ? () => {

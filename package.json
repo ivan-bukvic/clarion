@@ -12,7 +12,8 @@
     "test:parsing": "node scripts/smoke-test-parsing.mjs",
     "test:ingestion": "tsx --env-file=.env.local scripts/smoke-test-ingestion.ts",
     "test:chat": "tsx --env-file=.env.local scripts/smoke-test-chat.ts",
-    "test:compare": "tsx --env-file=.env.local scripts/smoke-test-compare.ts"
+    "test:compare": "tsx --env-file=.env.local scripts/smoke-test-compare.ts",
+    "test:report": "tsx --env-file=.env.local scripts/smoke-test-report.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.5",

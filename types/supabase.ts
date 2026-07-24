@@ -99,6 +99,41 @@ export type Database = {
           },
         ]
       }
+      generated_reports: {
+        Row: {
+          comparison_id: string
+          created_at: string
+          error_message: string | null
+          file_url: string | null
+          id: string
+          status: Database["public"]["Enums"]["report_status"]
+        }
+        Insert: {
+          comparison_id: string
+          created_at?: string
+          error_message?: string | null
+          file_url?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["report_status"]
+        }
+        Update: {
+          comparison_id?: string
+          created_at?: string
+          error_message?: string | null
+          file_url?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["report_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_reports_comparison_id_fkey"
+            columns: ["comparison_id"]
+            isOneToOne: true
+            referencedRelation: "comparisons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comparisons: {
         Row: {
           completed_at: string | null
@@ -247,6 +282,7 @@ export type Database = {
         | "term_difference"
         | "other"
       message_role: "user" | "assistant"
+      report_status: "pending" | "ready" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -386,6 +422,7 @@ export const Constants = {
         "other",
       ],
       message_role: ["user", "assistant"],
+      report_status: ["pending", "ready", "failed"],
     },
   },
 } as const

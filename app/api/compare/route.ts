@@ -1,11 +1,20 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireSession } from "@/lib/auth/guard";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { runComparison } from "@/lib/compare/run";
+import { triggerReportGeneration } from "@/lib/compare/report-trigger";
 
 export const runtime = "nodejs";
+// Hobby plan hard-caps at 60s. after() shares this same invocation budget
+// with the synchronous LLM comparison — lowering it only shortens the LLM
+// window without protecting the response path.
 export const maxDuration = 60;
+// Known limitation (demo scope): if the LLM call itself is pathologically
+// slow, the after() report task may still be cut off when the whole
+// invocation hits maxDuration. The UI Retry button (always available while
+// pending) recovers that case; a production build would use a real
+// background job. Out of scope for this demo.
 
 const bodySchema = z
   .object({
@@ -111,6 +120,7 @@ export async function POST(request: Request) {
         {
           code: "COMPARISON_GENERATION_FAILED" satisfies CompareErrorCode,
           message: result.message,
+          report: result.report,
           ...(result.comparison
             ? { comparison: result.comparison, findings: result.findings }
             : {}),
@@ -119,9 +129,35 @@ export async function POST(request: Request) {
       );
     }
 
+    // Only schedule after() when the pending tracking row exists — otherwise
+    // the client shows "failed"/Retry and a background ready write would be
+    // invisible until a manual refresh.
+    if (result.report.status === "pending") {
+      try {
+        after(() =>
+          triggerReportGeneration(supabase, {
+            id: result.comparison.id,
+            status: result.comparison.status,
+            summary: result.comparison.summary,
+            document_a_id: result.comparison.document_a_id,
+            document_b_id: result.comparison.document_b_id,
+            document_a_title: docA.title,
+            document_b_title: docB.title,
+          })
+        );
+      } catch (scheduleErr) {
+        // Scheduling failure must not replace the completed comparison response.
+        console.error(
+          "Failed to schedule report generation via after() (non-fatal)",
+          scheduleErr
+        );
+      }
+    }
+
     return NextResponse.json({
       comparison: result.comparison,
       findings: result.findings,
+      report: result.report,
     });
   } catch (err) {
     console.error("COMPARISON_UNEXPECTED", err);

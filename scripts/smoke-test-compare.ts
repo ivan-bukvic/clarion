@@ -8,6 +8,7 @@
  *   or: npx tsx --env-file=.env.local scripts/smoke-test-compare.ts
  */
 import { runComparison } from "../lib/compare/run";
+import { generateComparisonReport } from "../lib/compare/generate-report";
 import { Constants } from "../types/supabase";
 import { ingestFixture, serviceClient } from "./lib/ingest-fixture";
 
@@ -139,15 +140,53 @@ async function main() {
     findingsCount: result.findings.length,
     categories,
     summaryPreview: result.comparison.summary.slice(0, 160),
+    reportStatus: result.report.status,
   });
 
-  // Cleanup fixtures (findings cascade from comparisons; chunks cascade from documents)
+  if (result.report.status !== "pending") {
+    throw new Error(
+      `Expected report.status=pending after completed comparison, got ${result.report.status}`
+    );
+  }
+
+  // Explicitly generate the report (API route does this via after()).
+  const reportResult = await generateComparisonReport(supabase, {
+    ...result.comparison,
+    document_a_title: quoteA.title,
+    document_b_title: quoteB.title,
+  });
+  if (!reportResult.ok) {
+    throw new Error(`Report generation failed: ${reportResult.message}`);
+  }
+
+  const { data: reportRow, error: reportError } = await supabase
+    .from("generated_reports")
+    .select("comparison_id, file_url, status")
+    .eq("comparison_id", result.comparison.id)
+    .single();
+  if (
+    reportError ||
+    !reportRow ||
+    reportRow.status !== "ready" ||
+    !reportRow.file_url
+  ) {
+    throw new Error(
+      `Expected ready generated_reports row: ${JSON.stringify({
+        reportError,
+        reportRow,
+      })}`
+    );
+  }
+
+  // Cleanup fixtures (findings + reports cascade from comparisons; chunks cascade from documents)
   await supabase.from("comparisons").delete().eq("id", failedSeed.id);
   await supabase.from("comparisons").delete().eq("id", result.comparison.id);
   await supabase.from("documents").delete().eq("id", quoteA.documentId);
   await supabase.from("documents").delete().eq("id", quoteB.documentId);
 
-  console.log("PASS: comparison analysis + failed→retry path succeeded");
+  console.log(
+    "PASS: comparison analysis + DOCX report + failed→retry path succeeded"
+  );
 }
 
 main().catch((err) => {
