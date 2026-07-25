@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Diff, LoaderCircle } from "lucide-react";
 import type { Database, Tables } from "@/types/supabase";
 import { FindingsTable } from "@/components/compare/findings-table";
 import { Button } from "@/components/ui/button";
@@ -248,7 +249,10 @@ export function CompareUpload({
 
         {running ? (
           <div className="space-y-2 rounded-md border p-4">
-            <p className="text-sm font-medium">{progressLabel}</p>
+            <p className="flex items-center gap-1.5 text-sm font-medium">
+              <LoaderCircle className="size-4 animate-spin" />
+              {progressLabel}
+            </p>
             <Progress value={progressValue} />
             <p className="text-xs text-muted-foreground">
               Comparing full document content. This can take a few seconds.
@@ -263,6 +267,7 @@ export function CompareUpload({
         ) : null}
 
         <Button type="submit" disabled={!canStart}>
+          <Diff />
           {running ? "Comparing…" : "Start Comparison"}
         </Button>
       </form>

@@ -79,19 +79,21 @@ export default async function ChatPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-full w-full max-w-6xl flex-1 flex-col gap-6 p-6 lg:flex-row">
-      <section className="w-full space-y-6 lg:max-w-sm lg:shrink-0">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Clarion</h1>
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 overflow-hidden p-6 md:flex-row">
+      <section className="flex max-h-64 w-full flex-col gap-4 overflow-hidden md:max-h-none md:max-w-sm md:shrink-0">
+        <div className="shrink-0">
+          <h1 className="text-xl font-semibold tracking-tight">Chat</h1>
           <p className="text-sm text-muted-foreground">
-            Upload documents for chat or comparison.
+            Upload documents and ask questions with source citations.
           </p>
         </div>
 
-        <DocumentUpload />
+        <div className="shrink-0">
+          <DocumentUpload />
+        </div>
 
-        <div className="space-y-3">
-          <h2 className="text-sm font-medium">Documents</h2>
+        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
+          <h2 className="shrink-0 text-sm font-medium">Documents</h2>
           <DocumentList documents={documents ?? []} />
         </div>
       </section>

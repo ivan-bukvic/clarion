@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatMessage } from "@/components/chat/chat-message";
@@ -94,8 +95,8 @@ export function ChatPanel({
   }
 
   return (
-    <section className="flex min-h-64 flex-1 flex-col rounded-lg border bg-background">
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+    <section className="flex h-full min-h-0 flex-1 flex-col rounded-lg border bg-background">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4">
         {!hasReadyCorpus ? (
           <p className="text-sm text-muted-foreground">
             Upload a document to get started.
@@ -138,6 +139,7 @@ export function ChatPanel({
           ) : null}
         </div>
         <Button type="submit" disabled={!hasReadyCorpus || loading || !input.trim()}>
+          <Send />
           {loading ? "Sending…" : "Send"}
         </Button>
       </form>

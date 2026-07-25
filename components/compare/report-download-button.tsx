@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type ReportDownloadButtonProps = {
@@ -52,6 +53,7 @@ export function ReportDownloadButton({
         }}
         disabled={downloading}
       >
+        <Download />
         {downloading ? "Downloading…" : "Download Report"}
       </Button>
       {error ? (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CircleAlert, LoaderCircle } from "lucide-react";
 import type { Database, Tables } from "@/types/supabase";
 import { FindingCategoryBadge } from "@/components/compare/finding-category-badge";
 import { ReportDownloadButton } from "@/components/compare/report-download-button";
@@ -94,14 +95,17 @@ export function FindingsTable({
   if (comparison.status === "failed") {
     return (
       <div className="space-y-4 rounded-md border border-destructive/40 bg-destructive/5 p-4">
-        <div>
-          <h2 className="text-sm font-medium text-destructive">
-            Comparison failed
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            The analysis could not be completed. You can retry with the same
-            documents.
-          </p>
+        <div className="flex items-start gap-2.5">
+          <CircleAlert className="mt-0.5 size-4 shrink-0 text-destructive" />
+          <div>
+            <h2 className="text-sm font-medium text-destructive">
+              Comparison failed
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              The analysis could not be completed. You can retry with the same
+              documents.
+            </p>
+          </div>
         </div>
         {onRetry ? (
           <Button
@@ -198,7 +202,8 @@ export function FindingsTable({
           <ReportDownloadButton comparisonId={comparison.id} />
         ) : reportStatus === "pending" ? (
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <p className="text-sm text-muted-foreground">
+            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <LoaderCircle className="size-3.5 animate-spin" />
               Generating report…
             </p>
             <Button
@@ -220,7 +225,8 @@ export function FindingsTable({
           </div>
         ) : (
           <div className="space-y-2 rounded-md border border-destructive/30 bg-destructive/5 p-3">
-            <p className="text-sm text-destructive">
+            <p className="flex items-center gap-1.5 text-sm text-destructive">
+              <CircleAlert className="size-3.5 shrink-0" />
               Report generation failed
             </p>
             <p className="text-xs text-muted-foreground">

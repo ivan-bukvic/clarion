@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ClarionMark } from "@/components/layout/clarion-mark";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.replace("/chat");
+      router.replace("/dashboard");
       router.refresh();
     } catch {
       setError("Something went wrong. Please try again.");
@@ -43,11 +44,14 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-full flex-1 items-center justify-center bg-muted/40 px-4">
       <div className="w-full max-w-sm space-y-8">
-        <div className="space-y-2 text-center">
-          <p className="text-3xl font-semibold tracking-tight">Clarion</p>
-          <p className="text-sm text-muted-foreground">
-            Sign in to continue
-          </p>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <ClarionMark className="size-10 text-base" />
+          <div className="space-y-1">
+            <p className="text-2xl font-semibold tracking-tight">Clarion</p>
+            <p className="text-sm text-muted-foreground">
+              Sign in to continue
+            </p>
+          </div>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4 rounded-lg border bg-background p-6 shadow-sm">

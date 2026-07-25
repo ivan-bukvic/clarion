@@ -5,10 +5,10 @@ import { createClient } from "@/lib/supabase/server";
  * only checks "is someone logged in", there is no role/permission check
  * since there is exactly one user and one role.
  *
- * Route-level page protection (/chat, /compare) is handled by Next.js
- * middleware — see SECURITY.md §1. This guard is for API routes that need
- * an explicit check before doing server-side work (upload, chat, compare,
- * report download).
+ * Route-level page protection (/dashboard, /chat, /compare) is handled by
+ * Next.js proxy (proxy.ts) via isProtectedPage() — see SECURITY.md §1.
+ * This guard is for API routes that need an explicit check before doing
+ * server-side work (upload, chat, compare, report download).
  */
 export async function requireSession() {
   const supabase = await createClient();

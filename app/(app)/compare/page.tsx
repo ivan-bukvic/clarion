@@ -21,7 +21,7 @@ export default async function ComparePage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-full w-full max-w-5xl flex-1 flex-col gap-6 p-6">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 overflow-y-auto p-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Compare</h1>
         <p className="text-sm text-muted-foreground">

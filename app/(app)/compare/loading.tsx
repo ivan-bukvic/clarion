@@ -1,6 +1,6 @@
 export default function CompareLoading() {
   return (
-    <main className="mx-auto flex min-h-full w-full max-w-5xl flex-1 flex-col gap-6 p-6">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 overflow-y-auto p-6">
       <div className="space-y-2">
         <div className="h-6 w-28 animate-pulse rounded bg-muted" />
         <div className="h-4 w-72 animate-pulse rounded bg-muted" />

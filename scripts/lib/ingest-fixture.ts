@@ -54,43 +54,54 @@ export async function ingestFixture(opts: {
   });
   if (insertError) throw new Error(`UPLOAD_FAILED: ${insertError.message}`);
 
-  // Production parse + chunk — not a local reimplementation
-  const parsed = await parseDocument(opts.buffer, opts.fileType);
-  const chunks = chunkText(parsed);
-  if (chunks.length === 0) throw new Error("PARSE_FAILED: no chunks");
+  // Same failure contract as app/api/documents/upload: never leave status
+  // stuck on "processing" after a parse/embed/insert/ready failure (e.g.
+  // transient Voyage 429 during smoke tests).
+  try {
+    // Production parse + chunk — not a local reimplementation
+    const parsed = await parseDocument(opts.buffer, opts.fileType);
+    const chunks = chunkText(parsed);
+    if (chunks.length === 0) throw new Error("PARSE_FAILED: no chunks");
 
-  const embeddings = await embed(
-    chunks.map((c) => c.content),
-    "document"
-  );
-  const createdAts = chunkCreatedAtTimestamps(chunks.length);
-  const rows = chunks.map((chunk, i) => ({
-    document_id: documentId,
-    heading: chunk.heading,
-    content: chunk.content,
-    embedding: JSON.stringify(embeddings[i]) as unknown as string,
-    created_at: createdAts[i],
-  }));
+    const embeddings = await embed(
+      chunks.map((c) => c.content),
+      "document"
+    );
+    const createdAts = chunkCreatedAtTimestamps(chunks.length);
+    const rows = chunks.map((chunk, i) => ({
+      document_id: documentId,
+      heading: chunk.heading,
+      content: chunk.content,
+      embedding: JSON.stringify(embeddings[i]) as unknown as string,
+      created_at: createdAts[i],
+    }));
 
-  const { error: chunkError } = await supabase
-    .from("document_chunks")
-    .insert(rows);
-  if (chunkError) throw new Error(`EMBEDDING_FAILED: ${chunkError.message}`);
+    const { error: chunkError } = await supabase
+      .from("document_chunks")
+      .insert(rows);
+    if (chunkError) throw new Error(`EMBEDDING_FAILED: ${chunkError.message}`);
 
-  const { error: readyError } = await supabase
-    .from("documents")
-    .update({ status: "ready" })
-    .eq("id", documentId);
-  if (readyError) throw new Error(`UPLOAD_FAILED: ${readyError.message}`);
+    const { error: readyError } = await supabase
+      .from("documents")
+      .update({ status: "ready" })
+      .eq("id", documentId);
+    if (readyError) throw new Error(`UPLOAD_FAILED: ${readyError.message}`);
 
-  return {
-    documentId,
-    title,
-    chunkCount: chunks.length,
-    headings: parsed.headings,
-    text: parsed.text,
-    chunks,
-  };
+    return {
+      documentId,
+      title,
+      chunkCount: chunks.length,
+      headings: parsed.headings,
+      text: parsed.text,
+      chunks,
+    };
+  } catch (err) {
+    await supabase
+      .from("documents")
+      .update({ status: "failed" })
+      .eq("id", documentId);
+    throw err;
+  }
 }
 
 export { serviceClient };
