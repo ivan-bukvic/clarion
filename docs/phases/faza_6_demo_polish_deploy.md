@@ -14,12 +14,12 @@ Ova faza ne dodaje novu funkcionalnost — čini demo verodostojnim i spremnim z
 
 | Fajl                             | Svrha                                                   |
 | -------------------------------- | ------------------------------------------------------- |
-| `quote-a-summit-contracting.pdf` | Ponuda izvođača A za kuhinjski remont — comparison demo |
-| `quote-b-northline-builders.pdf` | Ponuda izvođača B za isti posao — comparison demo       |
-| Scope of work                    | RAG chat korpus                                         |
-| Material spec sheet              | RAG chat korpus                                         |
-| Permit application               | RAG chat korpus                                         |
-| Prior vendor quote               | RAG chat korpus                                         |
+| `quote-a-ridgeline.txt`          | Ponuda izvođača A za kuhinjski remont — comparison demo |
+| `quote-b-summit.txt`             | Ponuda izvođača B za isti posao — comparison demo       |
+| `scope-of-work.txt`              | RAG chat korpus                                         |
+| `material-spec-sheet.txt`        | RAG chat korpus                                         |
+| `permit-application.txt`         | RAG chat korpus                                         |
+| `prior-vendor-quote.txt`         | RAG chat korpus                                         |
 
 Svi dokumenti moraju biti realno napisani (stvarni brojevi, stavke, uslovi) — ne lorem ipsum, ne "test test test". Vidi `PRODUCT_MASTER.md` §9.
 
@@ -59,13 +59,13 @@ Pre nego što se demo URL objavi javno, proći kompletan checklist iz `SECURITY.
 
 | #   | Zadatak                                                                            | Status |
 | --- | ---------------------------------------------------------------------------------- | ------ |
-| 1   | Svi demo dokumenti (2 ponude + 4 projektna dokumenta) finalizovani, realni sadržaj | [ ]    |
+| 1   | Svi demo dokumenti (2 ponude + 4 projektna dokumenta) finalizovani, realni sadržaj | [x]    |
 | 2   | Deploy na Vercel, javni URL radi                                                   | [ ]    |
 | 3   | Env varijable potvrđene u produkciji                                               | [ ]    |
-| 4   | Basic-auth konfigurisan (ako je demo URL javan bez login-a)                        | [ ]    |
-| 5   | Clarion branding (ime, logo/favicon, accent boja) primenjen                        | [ ]    |
-| 6   | README napisan (setup, arhitektura, workflow, razlike za pravog klijenta)          | [ ]    |
-| 7   | `SECURITY.md` §6 checklist kompletno prođen                                        | [ ]    |
+| 4   | Basic-auth konfigurisan (ako je demo URL javan bez login-a)                        | [x]    |
+| 5   | Clarion branding (ime, logo/favicon, accent boja) primenjen                        | [x]    |
+| 6   | README napisan (setup, arhitektura, workflow, razlike za pravog klijenta)          | [x]    |
+| 7   | `SECURITY.md` §6 checklist kompletno prođen                                        | [x]    |
 | 8   | End-to-end test na produkcijskom URL-u: upload → chat sa citatom                   | [ ]    |
 | 9   | End-to-end test na produkcijskom URL-u: upload dva dokumenta → download izveštaja  | [ ]    |
 

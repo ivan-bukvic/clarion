@@ -174,7 +174,7 @@ Definiše kako AI generiše kod za ovaj projekat. Mora biti postavljeno pre prvo
 | 14  | Shared Foundations moduli (`lib/supabase`, `lib/llm`, `lib/documents`, `lib/auth`) postavljeni | [x]    |
 | 15  | `.env.local` kreiran sa potrebnim varijablama                                                  | [x]    |
 | 16  | (Kasnije) Vercel deployment konfigurisan                                                       | [ ]    |
-| 17  | (Kasnije) Basic-auth konfigurisan                                                              | [ ]    |
+| 17  | (Kasnije) Basic-auth konfigurisan                                                              | [x]    |
 
 ---
 

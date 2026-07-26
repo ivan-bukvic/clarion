@@ -32,7 +32,7 @@ Clarion je sigurnosno jednostavniji od multi-tenant sistema — postoji samo jed
 
 Next.js middleware (`proxy.ts` u Next.js 16+) mora:
 
-- Primeniti basic-auth zavesu na ceo javni URL (env: `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD`) — dodatna zaštita preko edge-a; Supabase Auth ostaje prava zaštita za `/chat` i `/compare`
+- Primeniti basic-auth zavesu na sve rute osim statičkih asset-a bez osetljivih podataka (`_next/static`, `_next/image`, `favicon.ico`, slike — standardna Next.js matcher praksa) (env: `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD`) — dodatna zaštita preko edge-a; Supabase Auth ostaje prava zaštita za `/chat` i `/compare`
 - Redirectovati neulogovane korisnike sa `/chat` i `/compare` na `/login`
 - Primeniti auth proveru na sve `/api/*` rute osim `/login`-related auth endpoint-a
 
@@ -101,17 +101,17 @@ Clarion nema multi-tenancy, pa RLS politike nisu organizacione — ali i dalje t
 
 | #   | Zadatak                                                                                               | Status |
 | --- | ----------------------------------------------------------------------------------------------------- | ------ |
-| 1   | `/chat` i `/compare` zaštićeni middleware-om (`proxy.ts`)                                             | [ ]    |
-| 2   | `SUPABASE_SERVICE_ROLE_KEY` korišćen isključivo server-side                                           | [ ]    |
-| 3   | LLM i embedding API ključevi server-side only                                                         | [ ]    |
-| 4   | `NEXT_PUBLIC_` prefiks samo na zaista javnim ključevima                                               | [ ]    |
-| 5   | Input validacija (Zod) na upload i compare rutama                                                     | [ ]    |
-| 6   | File type/size validacija na upload ruti implementirana i testirana                                   | [ ]    |
-| 7   | Supabase Storage bucket nije javno čitljiv — download ide kroz server-side rutu                       | [ ]    |
-| 8   | Status transition logika (`comparisons`) je server-side, ne poverena klijentu                         | [ ]    |
-| 9   | Nema secret-a u git repozitorijumu (proveri `.env` u `.gitignore`)                                    | [ ]    |
-| 10  | Ako je demo URL javan bez logina, basic-auth je postavljen na edge-u                                  | [ ]    |
-| 11  | Git diff iz Claude Code UI polish sesije pregledan pre commit-a — nema izmena u `app/api/` ili `lib/` | [ ]    |
+| 1   | `/chat` i `/compare` zaštićeni middleware-om (`proxy.ts`)                                             | [x]    |
+| 2   | `SUPABASE_SERVICE_ROLE_KEY` korišćen isključivo server-side                                           | [x]    |
+| 3   | LLM i embedding API ključevi server-side only                                                         | [x]    |
+| 4   | `NEXT_PUBLIC_` prefiks samo na zaista javnim ključevima                                               | [x]    |
+| 5   | Input validacija (Zod) na upload i compare rutama                                                     | [x]    |
+| 6   | File type/size validacija na upload ruti implementirana i ručno verifikovana (nema automatizovanih testova) | [x]    |
+| 7   | Supabase Storage bucket nije javno čitljiv — download ide kroz server-side rutu                       | [x]    |
+| 8   | Status transition logika (`comparisons`) je server-side, ne poverena klijentu                         | [x]    |
+| 9   | Nema secret-a u git repozitorijumu (proveri `.env` u `.gitignore`)                                    | [x]    |
+| 10  | Ako je demo URL javan bez logina, basic-auth je postavljen na edge-u (sve rute osim statičkih asset-a bez osetljivih podataka) | [x]    |
+| 11  | Git diff iz Claude Code UI polish sesije pregledan pre commit-a — nema izmena u `app/api/` ili `lib/` | [x]    |
 
 ---
 
