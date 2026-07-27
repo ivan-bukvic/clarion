@@ -97,6 +97,10 @@ async function enforceBasicAuth(
  * Note: App Router route groups (e.g. app/(app)/) are URL-transparent —
  * pathname is still /dashboard, /chat, /compare. Protection is explicit via
  * isProtectedPage(), not inferred from the filesystem.
+ *
+ * "/" is the public marketing landing page (app/page.tsx) — it is not in
+ * isProtectedPage() and is intentionally not redirected here, unlike /login
+ * which still bounces a signed-in user to AUTHENTICATED_HOME.
  */
 export async function proxy(request: NextRequest) {
   const basicAuthResponse = await enforceBasicAuth(request);
@@ -134,7 +138,6 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isLogin = pathname === "/login";
   const isApiRoute = pathname.startsWith("/api/");
-  const isRoot = pathname === "/";
 
   // Defense-in-depth for API routes (SECURITY.md §1). Return JSON 401 —
   // never redirect — so fetch() callers can handle the response.
@@ -151,12 +154,6 @@ export async function proxy(request: NextRequest) {
   if (user && isLogin) {
     const url = request.nextUrl.clone();
     url.pathname = AUTHENTICATED_HOME;
-    return NextResponse.redirect(url);
-  }
-
-  if (isRoot) {
-    const url = request.nextUrl.clone();
-    url.pathname = user ? AUTHENTICATED_HOME : "/login";
     return NextResponse.redirect(url);
   }
 
