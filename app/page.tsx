@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ClarionMark } from "@/components/layout/clarion-mark";
 import { FaqAccordion } from "@/components/landing/faq-accordion";
+import { ChatPreview } from "@/components/landing/chat-preview";
 
 export const metadata: Metadata = {
   title: "Clarion — Ask your documents. Get answers you can verify.",
@@ -43,6 +44,45 @@ const STEPS = [
     n: "4",
     title: "Download or continue",
     desc: "Export the report as a Word document, or keep chatting to dig into the details.",
+  },
+] as const;
+
+const HERO_CHAT_ITEMS = [
+  {
+    question: "What's the estimated completion timeline?",
+    answer:
+      "The estimated completion timeline is 6 weeks from the start date, weather and permit approval permitting.",
+    badges: ["scope-of-work", "prior-vendor-quote"],
+  },
+  {
+    question: "What's the total budget for this project?",
+    answer: "The total budget is $18,750.",
+    badges: ["scope-of-work"],
+  },
+] as const;
+
+const PRODUCT_ACTION_CHAT_ITEMS = [
+  {
+    question: "What's the estimated completion timeline?",
+    answer:
+      "The estimated completion timeline is 6 weeks from the start date, weather and permit approval permitting.",
+    badges: ["scope-of-work", "prior-vendor-quote"],
+  },
+  {
+    question: "What's the permit number?",
+    answer: "The permit number is RR-2026-0142.",
+    badges: [
+      "permit-application",
+      "scope-of-work",
+      "prior-vendor-quote",
+      "material-spec-sheet",
+    ],
+  },
+  {
+    question: "What quartz did the homeowner request?",
+    answer:
+      'The homeowner requested Cambria "Brittanicca" quartz for the countertops.',
+    badges: ["material-spec-sheet", "scope-of-work", "prior-vendor-quote"],
   },
 ] as const;
 
@@ -168,27 +208,10 @@ export default function LandingPage() {
         </div>
 
         {/* decorative citation mockup */}
-        <div className="border-border bg-card shadow-clarion-lg relative mt-16 w-full max-w-none rounded-[18px] border p-7 sm:p-8">
-          <div className="mb-3.5 flex justify-end">
-            <div className="bg-clarion-gradient max-w-[70%] rounded-[12px_12px_2px_12px] px-4 py-2.5 text-sm text-white">
-              What&apos;s the estimated completion timeline?
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <div className="rounded-[12px_12px_12px_2px] bg-[#FAF8F3] px-4 py-3 text-sm leading-[1.5] text-[#1C2420]">
-              The estimated completion timeline is 6 weeks from the start date,
-              weather and permit approval permitting.
-            </div>
-            <div className="flex gap-1.5">
-              <span className="rounded-full bg-[#E5F1EC] px-2.5 py-1 text-[11.5px] font-semibold text-[#1F6F5C]">
-                scope-of-work.pdf
-              </span>
-              <span className="rounded-full bg-[#FBE7DE] px-2.5 py-1 text-[11.5px] font-semibold text-[#C85A38]">
-                prior-vendor-quote.pdf
-              </span>
-            </div>
-          </div>
-        </div>
+        <ChatPreview
+          items={HERO_CHAT_ITEMS}
+          className="mt-16 w-full max-w-none"
+        />
       </section>
 
       {/* HOW IT WORKS */}
@@ -223,6 +246,20 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* PRODUCT IN ACTION */}
+      <section className="mx-auto max-w-[1280px] px-6 py-20 sm:px-14 sm:py-[100px]">
+        <div className="mb-[52px] max-w-[640px]">
+          <div className="mb-2.5 text-[12.5px] font-bold tracking-[0.1em] text-[#E2724C]">
+            SEE IT IN ACTION
+          </div>
+          <h2 className="font-heading text-[32px] font-extrabold tracking-[-0.02em] text-[#16211D] sm:text-[38px]">
+            One conversation, every answer cited.
+          </h2>
+        </div>
+
+        <ChatPreview items={PRODUCT_ACTION_CHAT_ITEMS} showInput />
       </section>
 
       {/* WHY CLARION */}
