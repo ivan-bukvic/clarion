@@ -16,7 +16,7 @@ export const documentStatusVariant: Record<
 export function DocumentList({ documents }: { documents: DocumentRow[] }) {
   if (documents.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-2 rounded-md border border-dashed px-4 py-8 text-center">
+      <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed px-4 py-8 text-center">
         <Inbox className="size-5 text-muted-foreground" />
         <p className="text-sm text-muted-foreground">
           Upload a document to get started.
@@ -26,7 +26,7 @@ export function DocumentList({ documents }: { documents: DocumentRow[] }) {
   }
 
   return (
-    <ul className="divide-y rounded-md border">
+    <ul className="clarion-panel divide-y">
       {documents.map((doc) => (
         <li
           key={doc.id}

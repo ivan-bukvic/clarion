@@ -6,6 +6,7 @@ import { createServiceRoleClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { documentStatusVariant } from "@/components/chat/document-list";
+import { cn } from "@/lib/utils";
 import type { Tables } from "@/types/supabase";
 
 type DocumentRow = Tables<"documents">;
@@ -167,7 +168,11 @@ export default async function DashboardPage() {
         <Button asChild>
           <Link href="/chat">Open Chat</Link>
         </Button>
-        <Button asChild variant="outline">
+        <Button
+          asChild
+          variant="outline"
+          className="border-clarion-coral text-clarion-coral hover:bg-[color:var(--clarion-coral-tint)] hover:text-clarion-coral"
+        >
           <Link href="/compare">Compare Documents</Link>
         </Button>
       </div>
@@ -192,6 +197,7 @@ export default async function DashboardPage() {
               helper={`${findingsCount} ${
                 findingsCount === 1 ? "difference" : "differences"
               } found`}
+              tone="coral"
             />
             <StatCard
               icon={MessageSquare}
@@ -207,7 +213,7 @@ export default async function DashboardPage() {
                 No documents uploaded yet.
               </p>
             ) : (
-              <ul className="divide-y rounded-md border">
+              <ul className="clarion-panel divide-y">
                 {recentDocuments.map((doc) => (
                   <li
                     key={doc.id}
@@ -240,7 +246,7 @@ export default async function DashboardPage() {
                 No comparisons yet.
               </p>
             ) : (
-              <ul className="divide-y rounded-md border">
+              <ul className="clarion-panel divide-y">
                 {recentComparisons.map((c) => (
                   <li
                     key={c.id}
@@ -278,15 +284,24 @@ function StatCard({
   label,
   value,
   helper,
+  tone = "green",
 }: {
   icon: LucideIcon;
   label: string;
   value: string;
   helper?: string;
+  tone?: "green" | "coral";
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-md border px-4 py-3">
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+    <div className="clarion-panel flex items-start gap-3 px-4 py-4">
+      <div
+        className={cn(
+          "flex size-9 shrink-0 items-center justify-center rounded-md",
+          tone === "coral"
+            ? "bg-[color:var(--clarion-coral-tint)] text-clarion-coral"
+            : "bg-[color:var(--clarion-green-tint)] text-primary"
+        )}
+      >
         <Icon className="size-4" />
       </div>
       <div className="min-w-0 space-y-0.5">

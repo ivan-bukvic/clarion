@@ -95,7 +95,7 @@ export function ChatPanel({
   }
 
   return (
-    <section className="flex h-full min-h-0 flex-1 flex-col rounded-lg border bg-background">
+    <section className="clarion-panel flex h-full min-h-0 flex-1 flex-col">
       <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4">
         {!hasReadyCorpus ? (
           <p className="text-sm text-muted-foreground">

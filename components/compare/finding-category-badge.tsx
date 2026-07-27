@@ -16,7 +16,7 @@ const CATEGORY_STYLES: Record<FindingCategory, string> = {
   missing_item:
     "bg-red-100 text-red-900 dark:bg-red-500/15 dark:text-red-300",
   scope_difference:
-    "bg-blue-100 text-blue-900 dark:bg-blue-500/15 dark:text-blue-300",
+    "bg-[#E1F0EC] text-[#1F6F5C] dark:bg-emerald-500/15 dark:text-emerald-300",
   term_difference:
     "bg-purple-100 text-purple-900 dark:bg-purple-500/15 dark:text-purple-300",
   other: "",

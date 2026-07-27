@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -5,45 +6,60 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.546 0.245 262.881);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.623 0.214 259.815);
+  --background: #f7f5f0;
+  --foreground: #1c2420;
+  --card: #ffffff;
+  --card-foreground: #1c2420;
+  --popover: #ffffff;
+  --popover-foreground: #1c2420;
+  --primary: #1f6f5c;
+  --primary-foreground: #ffffff;
+  --secondary: #f1ede4;
+  --secondary-foreground: #33403a;
+  --muted: #f1ede4;
+  --muted-foreground: #726c63;
+  --accent: #f1ede4;
+  --accent-foreground: #2a322d;
+  --destructive: #b23b2a;
+  --border: #ece6da;
+  --input: #dedacf;
+  --ring: #e2724c;
+
+  /* Clarion brand extensions — coral accent, green gradients, soft shadows */
+  --clarion-coral: #e2724c;
+  --clarion-coral-foreground: #c85a38;
+  --clarion-coral-tint: #fbe7de;
+  --clarion-green-tint: #e5f1ec;
+  --clarion-green-tint-foreground: #1f6f5c;
+  --clarion-gradient-primary: linear-gradient(160deg, #227b65 0%, #1b5f50 100%);
+  --clarion-gradient-primary-hover: linear-gradient(160deg, #279173, #1f6f5c 100%);
+  --clarion-gradient-sidebar: linear-gradient(160deg, #17493f 0%, #123f3b 40%, #0a2723 100%);
+  --clarion-gradient-topbar: linear-gradient(90deg, #0f3b37, #1f6f5c 55%, #e2724c);
+  --clarion-shadow-sm: 0 1px 2px rgba(20, 40, 35, 0.04);
+  --clarion-shadow-md: 0 10px 24px -10px rgba(20, 40, 35, 0.1);
+  --clarion-shadow-lg: 0 16px 40px -12px rgba(20, 40, 35, 0.16);
+  --clarion-shadow-btn: 0 4px 14px -3px rgba(31, 111, 92, 0.45);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.623 0.214 259.815);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.707 0.165 254.624);
+  --background: #12211d;
+  --foreground: #eaf3f0;
+  --card: #17332c;
+  --card-foreground: #eaf3f0;
+  --popover: #17332c;
+  --popover-foreground: #eaf3f0;
+  --primary: #3fa78e;
+  --primary-foreground: #0a2723;
+  --secondary: #1f3a33;
+  --secondary-foreground: #eaf3f0;
+  --muted: #1f3a33;
+  --muted-foreground: #8fb6ac;
+  --accent: #1f3a33;
+  --accent-foreground: #eaf3f0;
+  --destructive: #e2724c;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #e2724c;
 }
 
 @theme inline {
@@ -69,7 +85,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
 }
 
@@ -78,11 +94,49 @@ body {
   color: var(--foreground);
 }
 
+::selection {
+  background: #cfe6df;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-clarion-gradient {
+    background-image: var(--clarion-gradient-primary);
+  }
+  .bg-clarion-gradient:hover {
+    background-image: var(--clarion-gradient-primary-hover);
+  }
+  .bg-clarion-sidebar-gradient {
+    background-image: var(--clarion-gradient-sidebar);
+  }
+  .bg-clarion-topbar-gradient {
+    background-image: var(--clarion-gradient-topbar);
+  }
+  .text-clarion-coral {
+    color: var(--clarion-coral-foreground);
+  }
+  .border-clarion-coral {
+    border-color: var(--clarion-coral);
+  }
+  .shadow-clarion-sm {
+    box-shadow: var(--clarion-shadow-sm), var(--clarion-shadow-md);
+  }
+  .shadow-clarion-lg {
+    box-shadow: var(--clarion-shadow-sm), var(--clarion-shadow-lg);
+  }
+  .shadow-clarion-btn {
+    box-shadow: var(--clarion-shadow-btn);
+  }
+  .clarion-panel {
+    @apply rounded-xl border bg-card;
+    box-shadow: var(--clarion-shadow-sm), var(--clarion-shadow-md);
   }
 }

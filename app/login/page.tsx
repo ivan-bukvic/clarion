@@ -42,52 +42,58 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-full flex-1 items-center justify-center bg-muted/40 px-4">
-      <div className="w-full max-w-sm space-y-8">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <ClarionMark className="size-10 text-base" />
-          <div className="space-y-1">
-            <p className="text-2xl font-semibold tracking-tight">Clarion</p>
-            <p className="text-sm text-muted-foreground">
-              Sign in to continue
-            </p>
+    <main className="flex min-h-full flex-1 flex-col bg-background">
+      <div className="h-[5px] w-full bg-clarion-topbar-gradient" />
+      <div className="flex flex-1 items-center justify-center px-4 py-10">
+        <div className="w-full max-w-sm space-y-7">
+          <div className="flex flex-col items-center gap-3 text-center">
+            <ClarionMark className="size-14" />
+            <div className="space-y-1">
+              <p className="text-2xl font-semibold tracking-tight">Clarion</p>
+              <p className="text-sm text-muted-foreground">
+                Sign in to continue
+              </p>
+            </div>
           </div>
+
+          <form
+            onSubmit={onSubmit}
+            className="clarion-panel space-y-4 p-7"
+          >
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            {error ? (
+              <p className="text-sm text-destructive" role="alert">
+                {error}
+              </p>
+            ) : null}
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Signing in…" : "Sign in"}
+            </Button>
+          </form>
         </div>
-
-        <form onSubmit={onSubmit} className="space-y-4 rounded-lg border bg-background p-6 shadow-sm">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          {error ? (
-            <p className="text-sm text-destructive" role="alert">
-              {error}
-            </p>
-          ) : null}
-
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in…" : "Sign in"}
-          </Button>
-        </form>
       </div>
     </main>
   );

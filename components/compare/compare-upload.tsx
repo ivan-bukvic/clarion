@@ -248,7 +248,7 @@ export function CompareUpload({
         ) : null}
 
         {running ? (
-          <div className="space-y-2 rounded-md border p-4">
+          <div className="clarion-panel space-y-2 p-4">
             <p className="flex items-center gap-1.5 text-sm font-medium">
               <LoaderCircle className="size-4 animate-spin" />
               {progressLabel}
@@ -314,7 +314,7 @@ function DocumentSlot({
   onUpload: (file: File | null) => void;
 }) {
   return (
-    <div className="space-y-3 rounded-md border p-4">
+    <div className="clarion-panel space-y-3 p-5">
       <h2 className="text-sm font-medium">{label}</h2>
 
       <div className="space-y-2">

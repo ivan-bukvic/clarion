@@ -18,10 +18,10 @@ export function ChatMessage({
       className={`flex flex-col gap-2 ${isUser ? "items-end" : "items-start"}`}
     >
       <div
-        className={`max-w-[85%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap ${
+        className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap ${
           isUser
-            ? "bg-primary text-primary-foreground"
-            : "border bg-background text-foreground"
+            ? "bg-clarion-gradient text-primary-foreground shadow-clarion-btn"
+            : "border bg-background text-foreground shadow-clarion-sm"
         }`}
       >
         {message.content}

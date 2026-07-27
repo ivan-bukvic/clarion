@@ -94,7 +94,7 @@ export function FindingsTable({
 
   if (comparison.status === "failed") {
     return (
-      <div className="space-y-4 rounded-md border border-destructive/40 bg-destructive/5 p-4">
+      <div className="space-y-4 rounded-xl border border-destructive/40 bg-destructive/5 p-4">
         <div className="flex items-start gap-2.5">
           <CircleAlert className="mt-0.5 size-4 shrink-0 text-destructive" />
           <div>
@@ -224,7 +224,7 @@ export function FindingsTable({
             ) : null}
           </div>
         ) : (
-          <div className="space-y-2 rounded-md border border-destructive/30 bg-destructive/5 p-3">
+          <div className="space-y-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3">
             <p className="flex items-center gap-1.5 text-sm text-destructive">
               <CircleAlert className="size-3.5 shrink-0" />
               Report generation failed
@@ -257,34 +257,36 @@ export function FindingsTable({
         <h2 className="text-sm font-medium">
           Findings ({findings.length})
         </h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Category</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Document A</TableHead>
-              <TableHead>Document B</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {findings.map((finding) => (
-              <TableRow key={finding.id}>
-                <TableCell className="align-top whitespace-normal">
-                  <FindingCategoryBadge category={finding.category} />
-                </TableCell>
-                <TableCell className="max-w-md align-top whitespace-normal text-sm">
-                  {finding.description}
-                </TableCell>
-                <TableCell className="align-top whitespace-normal text-sm text-muted-foreground">
-                  {finding.source_a_ref ?? "—"}
-                </TableCell>
-                <TableCell className="align-top whitespace-normal text-sm text-muted-foreground">
-                  {finding.source_b_ref ?? "—"}
-                </TableCell>
+        <div className="clarion-panel overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-[#FAF8F3] hover:bg-[#FAF8F3]">
+                <TableHead>Category</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Document A</TableHead>
+                <TableHead>Document B</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {findings.map((finding) => (
+                <TableRow key={finding.id}>
+                  <TableCell className="align-top whitespace-normal">
+                    <FindingCategoryBadge category={finding.category} />
+                  </TableCell>
+                  <TableCell className="max-w-md align-top whitespace-normal text-sm">
+                    {finding.description}
+                  </TableCell>
+                  <TableCell className="align-top whitespace-normal text-sm text-muted-foreground">
+                    {finding.source_a_ref ?? "—"}
+                  </TableCell>
+                  <TableCell className="align-top whitespace-normal text-sm text-muted-foreground">
+                    {finding.source_b_ref ?? "—"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );
