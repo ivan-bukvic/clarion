@@ -165,53 +165,55 @@ export default function LandingPage() {
           }}
         />
 
-        <div className="relative flex max-w-[760px] flex-col items-start">
-          <div className="border-border bg-card shadow-clarion-sm mb-[26px] flex items-center gap-2 rounded-full border px-3.5 py-[7px]">
-            <span className="size-[7px] shrink-0 rounded-full bg-[#E2724C]" />
-            <span className="text-[12.5px] font-semibold tracking-[0.03em] text-[#4A524C]">
-              RAG CHAT &nbsp;+&nbsp; DOCUMENT COMPARISON
-            </span>
+        <div className="relative flex flex-col items-start gap-16 md:flex-row md:gap-12">
+          <div className="flex max-w-[560px] flex-col items-start">
+            <div className="border-border bg-card shadow-clarion-sm mb-[26px] flex items-center gap-2 rounded-full border px-3.5 py-[7px]">
+              <span className="size-[7px] shrink-0 rounded-full bg-[#E2724C]" />
+              <span className="text-[12.5px] font-semibold tracking-[0.03em] text-[#4A524C]">
+                RAG CHAT &nbsp;+&nbsp; DOCUMENT COMPARISON
+              </span>
+            </div>
+
+            <h1 className="font-heading text-[40px] leading-[1.08] font-extrabold tracking-[-0.03em] text-[#16211D] sm:text-[58px] sm:leading-[1.05]">
+              Ask your documents.
+              <br />
+              Get answers <span className="text-primary">you can verify.</span>
+            </h1>
+
+            <p className="mt-6 text-[17px] leading-[1.6] text-[#5B635D]">
+              Clarion reads a company&apos;s own documents and answers questions
+              with citations back to the source, or lines up two quotes side by
+              side and writes the findings report for you.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3.5">
+              <Button
+                asChild
+                size="lg"
+                className="shadow-clarion-btn rounded-[10px] px-[26px] text-[15px]"
+              >
+                <Link href="/login">
+                  Get started
+                  <ArrowRight className="size-[15px]" strokeWidth={2.4} />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-input shadow-clarion-sm rounded-[10px] border-[1.5px] px-[26px] text-[15px] text-[#2A322D]"
+              >
+                <a href="#how">See how it works</a>
+              </Button>
+            </div>
           </div>
 
-          <h1 className="font-heading text-[40px] leading-[1.08] font-extrabold tracking-[-0.03em] text-[#16211D] sm:text-[58px] sm:leading-[1.05]">
-            Ask your documents.
-            <br />
-            Get answers <span className="text-primary">you can verify.</span>
-          </h1>
-
-          <p className="mt-6 max-w-[560px] text-[17px] leading-[1.6] text-[#5B635D]">
-            Clarion reads a company&apos;s own documents and answers questions
-            with citations back to the source, or lines up two quotes side by
-            side and writes the findings report for you.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3.5">
-            <Button
-              asChild
-              size="lg"
-              className="shadow-clarion-btn rounded-[10px] px-[26px] text-[15px]"
-            >
-              <Link href="/login">
-                Get started
-                <ArrowRight className="size-[15px]" strokeWidth={2.4} />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-input shadow-clarion-sm rounded-[10px] border-[1.5px] px-[26px] text-[15px] text-[#2A322D]"
-            >
-              <a href="#how">See how it works</a>
-            </Button>
-          </div>
+          {/* decorative citation mockup */}
+          <ChatPreview
+            items={HERO_CHAT_ITEMS}
+            className="w-full md:min-w-0 md:flex-1"
+          />
         </div>
-
-        {/* decorative citation mockup */}
-        <ChatPreview
-          items={HERO_CHAT_ITEMS}
-          className="mt-16 w-full max-w-none"
-        />
       </section>
 
       {/* HOW IT WORKS */}
