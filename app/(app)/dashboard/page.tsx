@@ -20,11 +20,7 @@ type RecentComparison = ComparisonRow & {
 
 async function countExact(
   supabase: ReturnType<typeof createServiceRoleClient>,
-  table:
-    | "documents"
-    | "comparisons"
-    | "comparison_findings"
-    | "chat_sessions"
+  table: "documents" | "comparisons" | "comparison_findings" | "chat_sessions"
 ): Promise<number> {
   const { count, error } = await supabase
     .from(table)
@@ -107,7 +103,10 @@ export default async function DashboardPage() {
     const [docsResult, findingsResult] = await Promise.all([
       documentIds.length > 0
         ? supabase.from("documents").select("id, title").in("id", documentIds)
-        : Promise.resolve({ data: [] as { id: string; title: string }[], error: null }),
+        : Promise.resolve({
+            data: [] as { id: string; title: string }[],
+            error: null,
+          }),
       comparisonIds.length > 0
         ? supabase
             .from("comparison_findings")
@@ -120,7 +119,10 @@ export default async function DashboardPage() {
     ]);
 
     if (docsResult.error) {
-      console.error("Failed to load comparison document titles", docsResult.error);
+      console.error(
+        "Failed to load comparison document titles",
+        docsResult.error
+      );
     } else {
       for (const doc of docsResult.data ?? []) {
         titlesById.set(doc.id, doc.title);
@@ -153,12 +155,12 @@ export default async function DashboardPage() {
     documentCount > 0 || comparisonCount > 0 || chatSessionCount > 0;
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 overflow-y-auto p-6">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 overflow-y-auto p-6 lg:px-10">
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">
           Welcome back, Ridgeline Renovations
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground max-w-2xl text-sm">
           AI-powered document intelligence — chat with your project files or
           compare vendor quotes in seconds.
         </p>
@@ -171,14 +173,14 @@ export default async function DashboardPage() {
         <Button
           asChild
           variant="outline"
-          className="border-clarion-coral text-clarion-coral hover:bg-[color:var(--clarion-coral-tint)] hover:text-clarion-coral"
+          className="border-clarion-coral text-clarion-coral hover:text-clarion-coral hover:bg-[color:var(--clarion-coral-tint)]"
         >
           <Link href="/compare">Compare Documents</Link>
         </Button>
       </div>
 
       {!hasAnyData ? (
-        <p className="rounded-md border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground rounded-md border border-dashed px-4 py-8 text-center text-sm">
           No activity yet. Upload a document in Chat or start a comparison to
           see it here.
         </p>
@@ -206,73 +208,75 @@ export default async function DashboardPage() {
             />
           </section>
 
-          <section className="space-y-3">
-            <h2 className="text-sm font-medium">Recent documents</h2>
-            {recentDocuments.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No documents uploaded yet.
-              </p>
-            ) : (
-              <ul className="clarion-panel divide-y">
-                {recentDocuments.map((doc) => (
-                  <li
-                    key={doc.id}
-                    className="flex items-start justify-between gap-3 px-3 py-3"
-                  >
-                    <div className="flex min-w-0 items-start gap-2.5">
-                      <FileText className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-                      <div className="min-w-0 space-y-1">
-                        <p className="truncate text-sm font-medium">
-                          {doc.title}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {doc.purpose}
-                        </p>
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-6">
+            <section className="space-y-3">
+              <h2 className="text-sm font-medium">Recent documents</h2>
+              {recentDocuments.length === 0 ? (
+                <p className="text-muted-foreground text-sm">
+                  No documents uploaded yet.
+                </p>
+              ) : (
+                <ul className="clarion-panel divide-y">
+                  {recentDocuments.map((doc) => (
+                    <li
+                      key={doc.id}
+                      className="flex items-start justify-between gap-3 px-3 py-3"
+                    >
+                      <div className="flex min-w-0 items-start gap-2.5">
+                        <FileText className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+                        <div className="min-w-0 space-y-1">
+                          <p className="truncate text-sm font-medium">
+                            {doc.title}
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            {doc.purpose}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <Badge variant={documentStatusVariant[doc.status]}>
-                      {doc.status}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
+                      <Badge variant={documentStatusVariant[doc.status]}>
+                        {doc.status}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
 
-          <section className="space-y-3">
-            <h2 className="text-sm font-medium">Recent comparisons</h2>
-            {recentComparisons.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No comparisons yet.
-              </p>
-            ) : (
-              <ul className="clarion-panel divide-y">
-                {recentComparisons.map((c) => (
-                  <li
-                    key={c.id}
-                    className="flex flex-col gap-2 px-3 py-3 sm:flex-row sm:items-start sm:justify-between"
-                  >
-                    <div className="flex min-w-0 items-start gap-2.5">
-                      <Diff className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-                      <div className="min-w-0 space-y-1">
-                        <p className="truncate text-sm font-medium">
-                          {c.document_a_title} vs {c.document_b_title}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(c.created_at).toLocaleDateString("en-US")}{" "}
-                          · {c.findings_count}{" "}
-                          {c.findings_count === 1
-                            ? "difference"
-                            : "differences"}
-                        </p>
+            <section className="space-y-3">
+              <h2 className="text-sm font-medium">Recent comparisons</h2>
+              {recentComparisons.length === 0 ? (
+                <p className="text-muted-foreground text-sm">
+                  No comparisons yet.
+                </p>
+              ) : (
+                <ul className="clarion-panel divide-y">
+                  {recentComparisons.map((c) => (
+                    <li
+                      key={c.id}
+                      className="flex flex-col gap-2 px-3 py-3 sm:flex-row sm:items-start sm:justify-between"
+                    >
+                      <div className="flex min-w-0 items-start gap-2.5">
+                        <Diff className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+                        <div className="min-w-0 space-y-1">
+                          <p className="truncate text-sm font-medium">
+                            {c.document_a_title} vs {c.document_b_title}
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            {new Date(c.created_at).toLocaleDateString("en-US")}{" "}
+                            · {c.findings_count}{" "}
+                            {c.findings_count === 1
+                              ? "difference"
+                              : "differences"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <Badge variant="secondary">{c.status}</Badge>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
+                      <Badge variant="secondary">{c.status}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
         </>
       )}
     </main>
@@ -298,17 +302,17 @@ function StatCard({
         className={cn(
           "flex size-9 shrink-0 items-center justify-center rounded-md",
           tone === "coral"
-            ? "bg-[color:var(--clarion-coral-tint)] text-clarion-coral"
-            : "bg-[color:var(--clarion-green-tint)] text-primary"
+            ? "text-clarion-coral bg-[color:var(--clarion-coral-tint)]"
+            : "text-primary bg-[color:var(--clarion-green-tint)]"
         )}
       >
         <Icon className="size-4" />
       </div>
       <div className="min-w-0 space-y-0.5">
-        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="text-muted-foreground text-xs">{label}</p>
         <p className="text-lg font-semibold tracking-tight">{value}</p>
         {helper ? (
-          <p className="truncate text-xs text-muted-foreground">{helper}</p>
+          <p className="text-muted-foreground truncate text-xs">{helper}</p>
         ) : null}
       </div>
     </div>

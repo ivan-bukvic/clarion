@@ -49,7 +49,7 @@ function NavLinks({
                 "flex items-center gap-2 rounded-md border-l-2 px-3 py-2 text-sm font-medium transition-colors",
                 active
                   ? "border-primary bg-primary/10 text-primary"
-                  : "border-transparent text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-accent/50 hover:text-foreground border-transparent"
               )}
             >
               <Icon className="size-4 shrink-0" />
@@ -93,14 +93,14 @@ function BrandBlock({ compact = false }: { compact?: boolean }) {
         <p
           className={cn(
             "truncate font-semibold tracking-tight",
-            compact ? "text-sm text-foreground" : "text-[15px] text-white"
+            compact ? "text-foreground text-sm" : "text-[15px] text-white"
           )}
         >
           Clarion
         </p>
         <p
           className={cn(
-            "truncate text-[10.5px] font-semibold tracking-widest uppercase",
+            "max-w-full text-[9px] leading-snug font-semibold tracking-wider break-words uppercase",
             compact ? "text-muted-foreground" : "text-[#8FB6AC]"
           )}
         >
@@ -126,8 +126,7 @@ function useCurrentAccount() {
         const authUser = data.user;
         if (!authUser?.email) return;
         const metadata = authUser.user_metadata as
-          | Record<string, unknown>
-          | undefined;
+          Record<string, unknown> | undefined;
         const displayName =
           (metadata?.full_name as string | undefined) ??
           (metadata?.name as string | undefined) ??
@@ -162,14 +161,14 @@ function AccountMenu({ variant }: { variant: "sidebar" | "mobile" }) {
   if (variant === "mobile") {
     return (
       <div className="flex items-center gap-2.5 border-t px-2 pt-3">
-        <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+        <div className="bg-primary/10 text-primary flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold">
           {initial}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[12.5px] font-semibold text-foreground">
+          <p className="text-foreground truncate text-[12.5px] font-semibold">
             {account?.label ?? "Loading…"}
           </p>
-          <p className="truncate text-[11px] text-muted-foreground">
+          <p className="text-muted-foreground truncate text-[11px]">
             {account?.email ?? ""}
           </p>
         </div>
@@ -179,7 +178,7 @@ function AccountMenu({ variant }: { variant: "sidebar" | "mobile" }) {
           disabled={signingOut}
           title="Sign out"
           aria-label="Sign out"
-          className="flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
+          className="text-muted-foreground hover:bg-accent hover:text-foreground flex size-7 shrink-0 items-center justify-center rounded-md transition-colors disabled:opacity-50"
         >
           <LogOut className="size-3.5" />
         </button>
@@ -247,7 +246,7 @@ export function AppSidebar() {
       ) : null}
 
       {/* Desktop sidebar */}
-      <aside className="relative hidden w-56 shrink-0 flex-col gap-6 overflow-hidden bg-clarion-sidebar-gradient px-3.5 py-5 shadow-[2px_0_14px_rgba(0,0,0,0.12)] md:flex">
+      <aside className="bg-clarion-sidebar-gradient relative hidden w-56 shrink-0 flex-col gap-6 overflow-hidden px-3.5 py-5 shadow-[2px_0_14px_rgba(0,0,0,0.12)] md:flex">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-16 -right-16 size-52 rounded-full"
