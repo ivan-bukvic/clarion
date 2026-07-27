@@ -1,4 +1,3 @@
-import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
 
 export type DocumentSection = {
@@ -21,6 +20,11 @@ export type ParsedDocument = {
  * heading-aware chunking (BACKEND_MASTER.md §5). PDF/TXT fall back to a
  * single unstructured section — plain text is never run through the HTML
  * stripper (angle brackets like "< $10,000" must survive intact).
+ *
+ * pdf-parse is loaded via dynamic import inside the PDF branch only.
+ * Its pdfjs-dist dependency references browser-only APIs (DOMMatrix) at
+ * module evaluation time — a static top-level import crashes every
+ * upload on Vercel Node, including .txt/.docx. Keep it lazy.
  */
 export async function parseDocument(
   buffer: Buffer,
@@ -28,6 +32,7 @@ export async function parseDocument(
 ): Promise<ParsedDocument> {
   try {
     if (fileType === "pdf") {
+      const { PDFParse } = await import("pdf-parse");
       const parser = new PDFParse({ data: buffer });
       const result = await parser.getText();
       return toUnstructured(result.text, normalizePlainText);
@@ -151,23 +156,25 @@ function htmlToPlainText(html: string): string {
     }
   );
 
-  return withoutCellBreaks
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p>/gi, "\n")
-    .replace(/<\/div>/gi, "\n")
-    .replace(/<\/li>/gi, "\n")
-    .replace(/<\/tr>/gi, "\n")
-    .replace(/<\/t[dh]>/gi, " || ")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    // Drop trailing cell separator before newline / end of string
-    .replace(/ \|\| (\n|$)/g, "$1")
-    .replace(/[ \t]+\n/g, "\n")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  return (
+    withoutCellBreaks
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<\/li>/gi, "\n")
+      .replace(/<\/tr>/gi, "\n")
+      .replace(/<\/t[dh]>/gi, " || ")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      // Drop trailing cell separator before newline / end of string
+      .replace(/ \|\| (\n|$)/g, "$1")
+      .replace(/[ \t]+\n/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim()
+  );
 }
