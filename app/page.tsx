@@ -73,9 +73,9 @@ export default function LandingPage() {
   return (
     <div className="bg-background w-full overflow-hidden text-[#16211D]">
       <header className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-5 sm:px-14">
-        <Link href="/" className="flex items-center gap-2.5">
-          <ClarionMark className="size-[34px]" />
-          <span className="font-heading text-[19px] font-extrabold tracking-[-0.02em] text-[#16211D]">
+        <Link href="/" className="flex items-center gap-3">
+          <ClarionMark className="size-11" />
+          <span className="font-heading text-2xl font-extrabold tracking-[-0.02em] text-[#16211D]">
             Clarion
           </span>
         </Link>
@@ -168,7 +168,7 @@ export default function LandingPage() {
         </div>
 
         {/* decorative citation mockup */}
-        <div className="border-border bg-card shadow-clarion-lg relative mt-16 max-w-[640px] rounded-[18px] border p-7 sm:p-8">
+        <div className="border-border bg-card shadow-clarion-lg relative mt-16 w-full max-w-none rounded-[18px] border p-7 sm:p-8">
           <div className="mb-3.5 flex justify-end">
             <div className="bg-clarion-gradient max-w-[70%] rounded-[12px_12px_2px_12px] px-4 py-2.5 text-sm text-white">
               What&apos;s the estimated completion timeline?
