@@ -21,7 +21,7 @@ export function ChatMessage({
         className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap ${
           isUser
             ? "bg-clarion-gradient text-primary-foreground shadow-clarion-btn"
-            : "border bg-background text-foreground shadow-clarion-sm"
+            : "bg-background text-foreground shadow-clarion-sm border"
         }`}
       >
         {message.content}

@@ -148,6 +148,10 @@ function AccountMenu({ variant }: { variant: "sidebar" | "mobile" }) {
   const [signingOut, setSigningOut] = useState(false);
   const initial = account?.label ? account.label.charAt(0).toUpperCase() : "…";
 
+  // TODO: guard against double-click re-entry (if (signingOut) return;) and
+  // wrap signOut() in try/catch + finally { setSigningOut(false) } with a
+  // visible error on failure — currently a failed signOut() leaves the
+  // button disabled forever with no feedback.
   async function handleSignOut() {
     setSigningOut(true);
     await createClient().auth.signOut();

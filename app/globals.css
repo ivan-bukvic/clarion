@@ -32,9 +32,23 @@
   --clarion-green-tint: #e5f1ec;
   --clarion-green-tint-foreground: #1f6f5c;
   --clarion-gradient-primary: linear-gradient(160deg, #227b65 0%, #1b5f50 100%);
-  --clarion-gradient-primary-hover: linear-gradient(160deg, #279173, #1f6f5c 100%);
-  --clarion-gradient-sidebar: linear-gradient(160deg, #17493f 0%, #123f3b 40%, #0a2723 100%);
-  --clarion-gradient-topbar: linear-gradient(90deg, #0f3b37, #1f6f5c 55%, #e2724c);
+  --clarion-gradient-primary-hover: linear-gradient(
+    160deg,
+    #279173,
+    #1f6f5c 100%
+  );
+  --clarion-gradient-sidebar: linear-gradient(
+    160deg,
+    #17493f 0%,
+    #123f3b 40%,
+    #0a2723 100%
+  );
+  --clarion-gradient-topbar: linear-gradient(
+    90deg,
+    #0f3b37,
+    #1f6f5c 55%,
+    #e2724c
+  );
   --clarion-shadow-sm: 0 1px 2px rgba(20, 40, 35, 0.04);
   --clarion-shadow-md: 0 10px 24px -10px rgba(20, 40, 35, 0.1);
   --clarion-shadow-lg: 0 16px 40px -12px rgba(20, 40, 35, 0.16);
@@ -136,7 +150,7 @@ body {
     box-shadow: var(--clarion-shadow-btn);
   }
   .clarion-panel {
-    @apply rounded-xl border bg-card;
+    @apply bg-card rounded-xl border;
     box-shadow: var(--clarion-shadow-sm), var(--clarion-shadow-md);
   }
 }
