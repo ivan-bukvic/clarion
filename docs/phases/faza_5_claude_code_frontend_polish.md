@@ -54,14 +54,16 @@ Puna specifikacija: `FRONTEND_MASTER.md` §7, §8, §11, §14, §17. Detaljan pe
 | #   | Zadatak                                                                         | Status |
 | --- | ------------------------------------------------------------------------------- | ------ |
 | 1   | Oba flow-a + dashboard/sidebar verifikovani end-to-end pre polish prolaska      | [x]    |
-| 2   | Claude Code sesija otvorena na istom repou (bez GitHub import/export)           | [ ]    |
-| 3   | Login stranica doterana (branding, error state)                                 | [ ]    |
-| 4   | Sidebar + `/dashboard` doterani (brand, workspace, stats, liste, empty state)   | [ ]    |
-| 5   | `/chat` doteran (layout, citation stil, empty/loading, nezavisno skrolovanje)   | [ ]    |
-| 6   | `/compare` doteran (upload, findings tabela, download dugme, progress)          | [ ]    |
-| 7   | Responzivne provere na mobilnom viewport-u                                      | [ ]    |
-| 8   | Git diff pregledan pre commit-a — nema izmena u `app/api/` ili `lib/`           | [ ]    |
-| 9   | Oba flow-a + dashboard ponovo verifikovani nakon polish prolaska (regresija)    | [ ]    |
+| 2   | Claude Code sesija otvorena na istom repou (bez GitHub import/export)           | [x]    |
+| 3   | Login stranica doterana (branding, error state)                                 | [x]    |
+| 4   | Sidebar + `/dashboard` doterani (brand, workspace, stats, liste, empty state)   | [x]    |
+| 5   | `/chat` doteran (layout, citation stil, empty/loading, nezavisno skrolovanje)   | [x]    |
+| 6   | `/compare` doteran (upload, findings tabela, download dugme, progress)          | [x]    |
+| 7   | Responzivne provere na mobilnom viewport-u                                      | [x]    |
+| 8   | Git diff pregledan pre commit-a — nema izmena u `app/api/` ili `lib/`           | [x]    |
+| 9   | Oba flow-a + dashboard ponovo verifikovani nakon polish prolaska (regresija)    | [x]    |
+
+Verifikovano ručnim testiranjem (screenshotovi): login sa Clarion mark-om i accent bojom, dashboard sa realnim brojkama i ikonama, chat sa nezavisnim skrolovanjem panela (input fiksiran na dnu), compare sa obojenim category badge-ovima na desktop i mobilnom (sidebar collapse). Git diff pregledan — sve realne izmene van `components/**`/`app/**/page.tsx` presentation dela (`proxy.ts`, `lib/auth/guard.ts`) potvrđene kao legitiman rad iz koraka 1-2 (Amandman v1.1 funkcionalna izgradnja), ne kršenje UI-only scope-a. Code review runda (10 nalaza, 4 popravljena, 6 svesno van scope-a) prošla nakon toga.
 
 ---
 
