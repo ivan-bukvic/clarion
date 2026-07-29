@@ -21,16 +21,18 @@ export default async function ComparePage() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 overflow-y-auto p-6">
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">Compare</h1>
-        <p className="text-sm text-muted-foreground">
-          Upload or select exactly two comparison documents, then review
-          structured differences.
-        </p>
-      </div>
+    <div className="min-h-0 w-full flex-1 overflow-y-auto">
+      <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 p-6">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Compare</h1>
+          <p className="text-muted-foreground text-sm">
+            Upload or select exactly two comparison documents, then review
+            structured differences.
+          </p>
+        </div>
 
-      <CompareUpload documents={documents ?? []} />
-    </main>
+        <CompareUpload documents={documents ?? []} />
+      </main>
+    </div>
   );
 }

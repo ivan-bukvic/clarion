@@ -3,10 +3,7 @@ import { requireSession } from "@/lib/auth/guard";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { DocumentUpload } from "@/components/chat/document-upload";
 import { DocumentList } from "@/components/chat/document-list";
-import {
-  ChatPanel,
-  type ChatMessageView,
-} from "@/components/chat/chat-panel";
+import { ChatPanel, type ChatMessageView } from "@/components/chat/chat-panel";
 import { resolveCitations } from "@/lib/rag/citations";
 
 export default async function ChatPage() {
@@ -71,38 +68,38 @@ export default async function ChatPage() {
         message,
         citations: (message.cited_chunk_ids ?? [])
           .map((id) => citationsByChunkId.get(id))
-          .filter(
-            (c): c is NonNullable<typeof c> => c !== undefined
-          ),
+          .filter((c): c is NonNullable<typeof c> => c !== undefined),
       }));
     }
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 overflow-hidden p-6 md:flex-row">
-      <section className="flex max-h-64 w-full flex-col gap-4 overflow-hidden md:max-h-none md:max-w-sm md:shrink-0">
-        <div className="shrink-0">
-          <h1 className="text-xl font-semibold tracking-tight">Chat</h1>
-          <p className="text-sm text-muted-foreground">
-            Upload documents and ask questions with source citations.
-          </p>
-        </div>
+    <div className="min-h-0 w-full flex-1 overflow-y-auto">
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6 md:flex-row">
+        <section className="flex max-h-64 w-full flex-col gap-4 overflow-hidden md:max-h-none md:max-w-sm md:shrink-0">
+          <div className="shrink-0">
+            <h1 className="text-xl font-semibold tracking-tight">Chat</h1>
+            <p className="text-muted-foreground text-sm">
+              Upload documents and ask questions with source citations.
+            </p>
+          </div>
 
-        <div className="shrink-0">
-          <DocumentUpload />
-        </div>
+          <div className="shrink-0">
+            <DocumentUpload />
+          </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
-          <h2 className="shrink-0 text-sm font-medium">Documents</h2>
-          <DocumentList documents={documents ?? []} />
-        </div>
-      </section>
+          <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
+            <h2 className="shrink-0 text-sm font-medium">Documents</h2>
+            <DocumentList documents={documents ?? []} />
+          </div>
+        </section>
 
-      <ChatPanel
-        initialSessionId={initialSessionId}
-        initialMessages={initialMessages}
-        hasReadyCorpus={hasReadyCorpus}
-      />
-    </main>
+        <ChatPanel
+          initialSessionId={initialSessionId}
+          initialMessages={initialMessages}
+          hasReadyCorpus={hasReadyCorpus}
+        />
+      </main>
+    </div>
   );
 }
