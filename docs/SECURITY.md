@@ -25,8 +25,9 @@ Clarion je sigurnosno jednostavniji od multi-tenant sistema — postoji samo jed
 | `/api/chat`                | Korisnik          | Da            |
 | `/api/compare`             | Korisnik          | Da            |
 | `/api/compare/[id]/report` | Korisnik          | Da            |
+| `/api/cron/keep-alive`     | Vercel Cron only  | `CRON_SECRET` header (ne sesija) |
 
-> **Napomena:** za razliku od Respondly, Clarion nema javno dostupnu webhook rutu (nema spoljnjeg servisa koji šalje podatke bez sesije) — sve API rute zahtevaju ulogovanog korisnika. Ovo pojednostavljuje sigurnosni model u odnosu na Respondly, gde je webhook signature verifikacija bila najkritičnija tačka.
+> **Napomena:** za razliku od Respondly, Clarion nema javno dostupnu webhook rutu (nema spoljnjeg servisa koji šalje podatke bez sesije) — sve API rute zahtevaju ulogovanog korisnika. Ovo pojednostavljuje sigurnosni model u odnosu na Respondly, gde je webhook signature verifikacija bila najkritičnija tačka. Jedini izuzetak je `/api/cron/keep-alive`: namerno je izuzet iz session/Basic-Auth zavesa u `proxy.ts` i štiti se isključivo `CRON_SECRET` header-om — dnevni Vercel Cron ping sprečava da Supabase free-plan projekat automatski pauzira zbog 7 dana neaktivnosti.
 
 ### Middleware pravila
 
@@ -34,7 +35,7 @@ Next.js middleware (`proxy.ts` u Next.js 16+) mora:
 
 - Primeniti basic-auth zavesu na sve rute osim statičkih asset-a bez osetljivih podataka (`_next/static`, `_next/image`, `favicon.ico`, slike — standardna Next.js matcher praksa) (env: `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD`) — dodatna zaštita preko edge-a; Supabase Auth ostaje prava zaštita za `/chat` i `/compare`
 - Redirectovati neulogovane korisnike sa `/chat` i `/compare` na `/login`
-- Primeniti auth proveru na sve `/api/*` rute osim `/login`-related auth endpoint-a
+- Primeniti auth proveru na sve `/api/*` rute osim `/login`-related auth endpoint-a i `/api/cron/*` (Vercel Cron keep-alive, štiti se `CRON_SECRET` header-om)
 
 ---
 

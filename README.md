@@ -38,6 +38,7 @@ Backend and a minimal functional UI were built in Cursor (phases 0–4). UI poli
    - `ANTHROPIC_API_KEY`
    - `VOYAGE_API_KEY`
    - `BASIC_AUTH_USER` and `BASIC_AUTH_PASSWORD` (both required for the edge curtain; setting only one disables it and logs a warning). `BASIC_AUTH_USER` must not contain a `:` — credentials are split on the first colon per RFC 7617, so a colon in the username breaks every login attempt.
+   - `CRON_SECRET` (keep-alive cron secret — prevents Supabase free-plan auto-pause; Vercel sends it as `Authorization: Bearer <value>` to `/api/cron/keep-alive` daily)
 3. Deploy. Framework preset: Next.js. Hobby plan `maxDuration` for comparison is capped at 60s (see Known limitations).
 4. Open the public URL → Basic-Auth prompt (if configured) → Clarion `/login` → seeded user
 5. Smoke-test on production: upload a corpus doc → chat with a citation; upload two quotes → compare → download Word report

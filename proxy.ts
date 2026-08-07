@@ -103,6 +103,15 @@ async function enforceBasicAuth(
  * which still bounces a signed-in user to AUTHENTICATED_HOME.
  */
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Vercel Cron calls /api/cron/* with "Authorization: Bearer <CRON_SECRET>" —
+  // no session cookie, no Basic-Auth. The route itself is the sole gate via
+  // CRON_SECRET; proxy must not intercept it with either curtain.
+  if (pathname.startsWith("/api/cron/")) {
+    return NextResponse.next();
+  }
+
   const basicAuthResponse = await enforceBasicAuth(request);
   if (basicAuthResponse) {
     return basicAuthResponse;
@@ -135,7 +144,6 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { pathname } = request.nextUrl;
   const isLogin = pathname === "/login";
   const isApiRoute = pathname.startsWith("/api/");
 
