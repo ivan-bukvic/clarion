@@ -7,7 +7,7 @@ export const runtime = "nodejs";
  * Vercel Cron target (see vercel.json) — pings Supabase daily so the
  * free-plan project is never idle for the 7 days that trigger auto-pause.
  * Read-only; no data is modified. Auth is CRON_SECRET only (proxy.ts
- * exempts /api/cron/* from Basic-Auth and session checks) — Vercel sends
+ * exempts /api/cron/* from session checks) — Vercel sends
  * "Authorization: Bearer <CRON_SECRET>" automatically when the env var is
  * set on the project.
  */

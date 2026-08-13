@@ -13,7 +13,6 @@ Next.js 16 (App Router, TypeScript, Tailwind, shadcn/ui) · Supabase (Postgres +
    - Supabase project URL + anon key + service role key (create a project at supabase.com, enable the `pgvector` extension)
    - `ANTHROPIC_API_KEY` (console.anthropic.com)
    - `VOYAGE_API_KEY` (dash.voyageai.com)
-   - Optional for local: leave `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` empty (curtain stays off)
 3. Apply Supabase migrations from `supabase/migrations/` to your project
 4. `npm run dev` — app runs at `localhost:3000`
 5. Sign in with the seeded Supabase Auth user
@@ -37,10 +36,9 @@ Backend and a minimal functional UI were built in Cursor (phases 0–4). UI poli
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `ANTHROPIC_API_KEY`
    - `VOYAGE_API_KEY`
-   - `BASIC_AUTH_USER` and `BASIC_AUTH_PASSWORD` (both required for the edge curtain; setting only one disables it and logs a warning). `BASIC_AUTH_USER` must not contain a `:` — credentials are split on the first colon per RFC 7617, so a colon in the username breaks every login attempt.
    - `CRON_SECRET` (keep-alive cron secret — prevents Supabase free-plan auto-pause; Vercel sends it as `Authorization: Bearer <value>` to `/api/cron/keep-alive` daily)
 3. Deploy. Framework preset: Next.js. Hobby plan `maxDuration` for comparison is capped at 60s (see Known limitations).
-4. Open the public URL → Basic-Auth prompt (if configured) → Clarion `/login` → seeded user
+4. Open the public URL → Clarion `/login` → seeded user
 5. Smoke-test on production: upload a corpus doc → chat with a citation; upload two quotes → compare → download Word report
 
 ## Known limitations (demo vs production)

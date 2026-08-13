@@ -146,7 +146,7 @@ Next.js middleware redirects any unauthenticated request to `/chat` or `/compare
 
 ### Purpose
 
-Gate the app. Given single-user scope, this can be Supabase Auth email/password for one seeded user, or basic-auth at the edge for the public demo URL, layered in addition (see `BACKEND_MASTER.md` §4).
+Gate the app. Given single-user scope, this is Supabase Auth email/password for one seeded user (see `BACKEND_MASTER.md` §4). An optional Basic-Auth edge curtain was removed in August 2026 — see `SECURITY.md` §1.
 
 ### Must contain
 

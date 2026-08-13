@@ -163,11 +163,12 @@ Single seeded Supabase Auth user. No signup flow, no invite flow, no role table 
 ```
 1. User seeded manually in Supabase (or via a one-time setup script)
 2. Login via Supabase Auth (email + password)
-3. Next.js middleware (proxy.ts in Next.js 16+) protects the whole app — redirects
-   unauthenticated requests to /login
+3. Next.js middleware (proxy.ts in Next.js 16+) protects /dashboard, /chat,
+   /compare and /api/* — redirects unauthenticated page requests to /login;
+   returns JSON 401 for unauthenticated /api/* calls
 ```
 
-If the public demo URL needs a lighter gate than full login, a Vercel/Next.js basic-auth layer sits in front of the whole app in addition to this — a deployment-time decision (Phase-end), not a schema decision.
+> **Napomena (avgust 2026):** optional Basic-Auth edge curtain that previously sat in front of the whole app was removed — the public demo URL is shared with prospective clients and Supabase Auth alone is the gate. See `SECURITY.md` §1.
 
 ---
 
@@ -291,8 +292,6 @@ Errors are logged server-side; the UI surfaces a plain-language message, never a
 | `SUPABASE_SERVICE_ROLE_KEY`             | **Secret** | Server only — used for ingestion, comparison, and report generation routes    |
 | `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` | **Secret** | Server only — whichever provider is chosen per `PRODUCT_MASTER.md` §11        |
 | `EMBEDDING_MODEL_API_KEY`               | **Secret** | Server only, if using a separate embedding provider from the generation model |
-| `BASIC_AUTH_USER`                       | **Secret** | Server only — basic-auth layer in front of the public demo URL, if used       |
-| `BASIC_AUTH_PASSWORD`                   | **Secret** | Server only — same as above                                                   |
 
 ---
 

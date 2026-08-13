@@ -27,6 +27,7 @@ Svi dokumenti moraju biti realno napisani (stvarni brojevi, stavke, uslovi) — 
 
 - Deploy na Vercel, pravi javni URL
 - `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` konfigurisani u Vercel Environment Variables ako demo URL treba dodatnu zavesu preko login-a
+  > **Napomena (avgust 2026):** Basic-Auth zavesa je naknadno uklonjena iz `proxy.ts` — više se ne konfiguriše. Ručno ukloniti `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` iz Vercel Environment Variables ako su još postavljeni. Supabase Auth ostaje jedina zaštita. Vidi `SECURITY.md` §1.
 - Svi env varijable iz Faze 0 potvrđene u produkciji (ne samo lokalno)
 
 ## Branding

@@ -69,6 +69,7 @@ Za razliku od Flight Sharing Platform-a, gde je SEO bio ključni razlog za Next.
 
 - Vercel — deployment konfiguracija (Faza 6)
 - Basic-auth (`BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD`) — kad se demo URL javno objavi (Faza 6)
+  > **Napomena (avgust 2026):** Basic-Auth zavesa je naknadno uklonjena iz `proxy.ts` — javni demo URL se deli sa potencijalnim klijentima i dodatni login sloj više nije potreban. Supabase Auth ostaje jedina zaštita za `/dashboard`, `/chat`, `/compare` i `/api/*`. Vidi `SECURITY.md` §1.
 
 ## Shared Foundations (uspostaviti u ovoj fazi)
 
@@ -94,8 +95,8 @@ Cursor će generisati `.env.local`. Ovo je referentni popis varijabli koje će b
 | `SUPABASE_SERVICE_ROLE_KEY`            | Supabase server ključ (samo server-side)    | Setup                    |
 | `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` | LLM provajder (odabrati jedan)              | Setup                    |
 | `EMBEDDING_MODEL_API_KEY`              | Ako je embedding provajder odvojen od LLM-a | Setup ako je primenljivo |
-| `BASIC_AUTH_USER`                      | Basic-auth zavesa za javni demo URL         | Kasnije                  |
-| `BASIC_AUTH_PASSWORD`                  | Basic-auth zavesa za javni demo URL         | Kasnije                  |
+| `BASIC_AUTH_USER`                      | Basic-auth zavesa za javni demo URL         | Kasnije — **uklonjeno avgust 2026** (vidi napomenu gore) |
+| `BASIC_AUTH_PASSWORD`                  | Basic-auth zavesa za javni demo URL         | Kasnije — **uklonjeno avgust 2026** (vidi napomenu gore) |
 
 ## Folder struktura
 

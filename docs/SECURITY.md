@@ -27,13 +27,12 @@ Clarion je sigurnosno jednostavniji od multi-tenant sistema — postoji samo jed
 | `/api/compare/[id]/report` | Korisnik          | Da            |
 | `/api/cron/keep-alive`     | Vercel Cron only  | `CRON_SECRET` header (ne sesija) |
 
-> **Napomena:** za razliku od Respondly, Clarion nema javno dostupnu webhook rutu (nema spoljnjeg servisa koji šalje podatke bez sesije) — sve API rute zahtevaju ulogovanog korisnika. Ovo pojednostavljuje sigurnosni model u odnosu na Respondly, gde je webhook signature verifikacija bila najkritičnija tačka. Jedini izuzetak je `/api/cron/keep-alive`: namerno je izuzet iz session/Basic-Auth zavesa u `proxy.ts` i štiti se isključivo `CRON_SECRET` header-om — dnevni Vercel Cron ping sprečava da Supabase free-plan projekat automatski pauzira zbog 7 dana neaktivnosti.
+> **Napomena:** za razliku od Respondly, Clarion nema javno dostupnu webhook rutu (nema spoljnjeg servisa koji šalje podatke bez sesije) — sve API rute zahtevaju ulogovanog korisnika. Ovo pojednostavljuje sigurnosni model u odnosu na Respondly, gde je webhook signature verifikacija bila najkritičnija tačka. Jedini izuzetak je `/api/cron/keep-alive`: namerno je izuzet iz session zavese u `proxy.ts` i štiti se isključivo `CRON_SECRET` header-om — dnevni Vercel Cron ping sprečava da Supabase free-plan projekat automatski pauzira zbog 7 dana neaktivnosti.
 
 ### Middleware pravila
 
 Next.js middleware (`proxy.ts` u Next.js 16+) mora:
 
-- Primeniti basic-auth zavesu na sve rute osim statičkih asset-a bez osetljivih podataka (`_next/static`, `_next/image`, `favicon.ico`, slike — standardna Next.js matcher praksa) (env: `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD`) — dodatna zaštita preko edge-a; Supabase Auth ostaje prava zaštita za `/chat` i `/compare`
 - Redirectovati neulogovane korisnike sa `/chat` i `/compare` na `/login`
 - Primeniti auth proveru na sve `/api/*` rute osim `/login`-related auth endpoint-a i `/api/cron/*` (Vercel Cron keep-alive, štiti se `CRON_SECRET` header-om)
 
@@ -111,7 +110,7 @@ Clarion nema multi-tenancy, pa RLS politike nisu organizacione — ali i dalje t
 | 7   | Supabase Storage bucket nije javno čitljiv — download ide kroz server-side rutu                       | [x]    |
 | 8   | Status transition logika (`comparisons`) je server-side, ne poverena klijentu                         | [x]    |
 | 9   | Nema secret-a u git repozitorijumu (proveri `.env` u `.gitignore`)                                    | [x]    |
-| 10  | Ako je demo URL javan bez logina, basic-auth je postavljen na edge-u (sve rute osim statičkih asset-a bez osetljivih podataka) | [x]    |
+| 10  | Demo URL javan; zaštita ide preko Supabase Auth (session) za `/dashboard`, `/chat`, `/compare` i `/api/*` — Basic-Auth edge zavesa uklonjena (avgust 2026) | [x]    |
 | 11  | Git diff iz Claude Code UI polish sesije pregledan pre commit-a — nema izmena u `app/api/` ili `lib/` | [x]    |
 
 ---
